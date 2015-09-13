@@ -1,0 +1,15 @@
+Ko Costarella, Kyra Wayne, Reese Levine
+
+We propose a 3D first-person maze game. The maze will be generated using a random path-finding algorithm
+such as Kruskal’s or Prim’s algorithm, and the difficulty level will increase as the player completes mazes.
+The camera will be controlled by a combination of accelerometer and touch controls. Since mazes can get
+complicated really fast, we aim to increase player attention span by putting obstacles at dead ends, so that
+players don’t have to always retrace their steps. For example, we can ask a question, which could be a riddle,
+programming question, or some other genre, and if the player gets the question right, the wall will open and
+reveal a way through the dead end. If the player gets the question wrong, an enemy could potentially show up
+which the player has to kill before being allowed to proceed.
+
+The walls will be shaded using a texture, possibly stone or psychedelic. The maze will be open at the top,
+and we plan to render a sky to make the world look more realistic. Since our maze will be “outside”, our custom
+shader can simulate an advanced lighting technique. There will be a beacon of light over the exit of the maze,
+giving a player some idea of what direction they need to proceed.
