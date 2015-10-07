@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project
+namespace Project1
 {
-   
+
 
     class Maze
     {
@@ -24,12 +24,12 @@ namespace Project
             public int y;
             public string direction;
 
-           public Edge(int x,int y,string direction) 
-           {
-               this.x = x;
-               this.y = y;
-               this.direction = direction;
-           }
+            public Edge(int x, int y, string direction)
+            {
+                this.x = x;
+                this.y = y;
+                this.direction = direction;
+            }
 
         }
 
@@ -39,7 +39,7 @@ namespace Project
         public int[,] grid;
         public Tree[,] sets;
 
-        public Maze() 
+        public Maze()
         {
 
             DIRECTION =
@@ -55,66 +55,72 @@ namespace Project
             {
                 {"E", 0}, {"W", 0}, {"N", -1}, {"S", 1}
             };
-           OPPOSITE =
-                new Dictionary<string, string>()
+            OPPOSITE =
+                 new Dictionary<string, string>()
                 {
                     {"E", "W"}, {"W", "E"}, {"N", "S"}, {"S", "N"}
                 };
-           rng = new Random();
-           height = 10;
-           width = 10;
-           grid = new int[height,width];
-           sets = new Tree[height,width];
-           edges = new List<Edge>();
-           populateGrid();
-           populateSets();
-           populateEdges();
-           Shuffle<Edge>(edges);
 
-           for (int i = 0; i < edges.Count; i++)
-           {
-               Edge nEdge = edges[i];
-               int x = nEdge.x, y = nEdge.y;
-               string direction = nEdge.direction;
-
-               int nx = x + DX[direction];
-               int ny = y + DY[direction];
-
-               Tree set1 = sets[y,x], set2 = sets[ny,nx];
-
-               if (!set1.isConnected(set2))
-               {
-                   set1.connect(set2);
-                   grid[y, x] = DIRECTION[direction];
-                   grid[ny,nx] = DIRECTION[OPPOSITE[direction]];
-               }
-           }
+            rng = new Random();
+            height = 10;
+            width = 10;
+            grid = new int[height, width];
+            sets = new Tree[height, width];
+            edges = new List<Edge>();
+            populateGrid();
+            populateSets();
+            populateEdges();
+            Shuffle<Edge>(edges);
+            joinSet();
         }
 
-       
+
+        private void joinSet()
+        {
+            for (int i = 0; i < edges.Count; i++)
+            {
+                Edge nEdge = edges[i];
+                int x = nEdge.x, y = nEdge.y;
+                string direction = nEdge.direction;
+
+                int nx = x + DX[direction];
+                int ny = y + DY[direction];
+
+                Tree set1 = sets[y, x];
+                Tree set2 = sets[ny, nx];
+                if (!set1.isConnected(set2))
+                {
+                    set1.connect(set2);
+                    grid[y, x] = DIRECTION[direction] | grid[y, x];
+                    grid[ny, nx] = DIRECTION[OPPOSITE[direction]] | grid[ny, nx];
+                }
+            }
+        }
+
 
 
         //populates a Grid with 0's            
-       private void populateGrid() {
+        private void populateGrid()
+        {
             for (int h = 0; h < height; h++)
-			{
-			    for (int w = 0; w < width; w++)
-			    {
-			        grid[h,w] = 0;
-			    }
-			}
+            {
+                for (int w = 0; w < width; w++)
+                {
+                    grid[h, w] = 0;
+                }
+            }
         }
 
         //populates sets with empty trees, all sets are disjoint
-        private void populateSets() 
+        private void populateSets()
         {
             for (int h = 0; h < height; h++)
-			{
-			    for (int w = 0; w < width; w++)
-			    {
-			        sets[h,w] = new Tree();
-			    }
-			}
+            {
+                for (int w = 0; w < width; w++)
+                {
+                    sets[h, w] = new Tree();
+                }
+            }
         }
 
         private void populateEdges()
@@ -125,7 +131,7 @@ namespace Project
                 {
                     if (h > 0)
                     {
-                        edges.Add(new Edge(w,h,"N"));
+                        edges.Add(new Edge(w, h, "N"));
 
                     }
                     if (w > 0)
@@ -148,6 +154,50 @@ namespace Project
                 list[k] = list[n];
                 list[n] = value;
             }
+        }
+
+        public override string ToString()
+        {
+            string str = "";
+            str += " ";
+            for (int i = 0; i < width * 2 - 1; i++)
+            {
+                str += "_";
+            }
+            str += "\n";
+            for (int row = 0; row < height; row++)
+            {
+                str += "|";
+                for (int col = 0; col < width; col++)
+                {
+                    if ((grid[row, col] & DIRECTION["S"]) != 0)
+                    {
+                        str += " ";
+                    }
+                    else
+                    {
+                        str += "_";
+                    }
+
+                    if ((grid[row, col] & DIRECTION["E"]) != 0)
+                    {
+                        if (((grid[row, col] | grid[row, col + 1]) & DIRECTION["S"]) != 0)
+                        {
+                            str += " ";
+                        }
+                        else
+                        {
+                            str += "_";
+                        }
+                    }
+                    else
+                    {
+                        str += "|";
+                    }
+                }
+                str += "\n";
+            }
+            return str;
         }
     }
 }
