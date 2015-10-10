@@ -23,5 +23,10 @@ namespace Project
         {
            
         }
+
+        public override void Draw(GameTime gametime)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

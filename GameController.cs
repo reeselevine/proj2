@@ -106,8 +106,6 @@ namespace Project
             // Create game objects.
             player = new Player(this);
             mazeController = new MazeController(this);
-             
-            gameObjects.Add(player);
             gameObjects.Add(mazeController.ground);
 
             // Create an input layout from the vertices
@@ -128,8 +126,8 @@ namespace Project
             {
                 keyboardState = keyboardManager.GetState();
                 flushAddedAndRemovedGameObjects();
-                player.Update(gameTime);
                 accelerometerReading = input.accelerometer.GetCurrentReading();
+                //player.Update(gameTime);
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].Update(gameTime);

@@ -19,7 +19,6 @@ namespace Project
         public Matrix View;
         public Matrix Projection;
         public Matrix World;
-        public Vector3 pos;
         public Vector3 oldPos;
 
 
@@ -27,7 +26,6 @@ namespace Project
         {
             this.game = game;
             type = GameObjectType.Player;
-            pos = new SharpDX.Vector3(0, game.boundaryBottom + 0.5f, 0);
 
             //camera controller
             pos = new Vector3(0, 0, -10);
@@ -58,6 +56,10 @@ namespace Project
             View = Matrix.LookAtLH(pos, new Vector3(0, 0, 0), Vector3.UnitY);
         }
 
- 
+        public override void Draw(GameTime gametime)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -43,6 +43,11 @@ namespace Project
         {
         }
 
+        public override void Draw(GameTime gametime)
+        {
+            throw new NotImplementedException();
+        }
+
         // Method for when the game ends. MOVE THIS
         private void gameOver()
         {
