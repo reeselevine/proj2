@@ -16,9 +16,9 @@ namespace Project
     public class Player : GameObject
     {
         //private float speed = 0.006f;
-        private float projectileSpeed = 20;
         public Matrix View;
         public Matrix Projection;
+        public Matrix World;
         public Vector3 pos;
         public Vector3 oldPos;
 
@@ -33,6 +33,7 @@ namespace Project
             pos = new Vector3(0, 0, -10);
             View = Matrix.LookAtLH(pos, new Vector3(0, 0, 0), Vector3.UnitY);
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.01f, 1000.0f);
+            World = Matrix.Identity;
             this.game = game;
         }
 

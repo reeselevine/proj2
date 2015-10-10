@@ -40,6 +40,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ground.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="MazeController.cs" />
     <Compile Include="GameInput.cs" />

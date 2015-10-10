@@ -46,7 +46,7 @@ namespace Project
         public GameInput input;
         public int score;
         public MainPage mainPage;
-
+        private MazeController mazeController;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
@@ -105,7 +105,10 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
+            mazeController = new MazeController(this);
+             
             gameObjects.Add(player);
+            gameObjects.Add(mazeController.ground);
 
             // Create an input layout from the vertices
 
@@ -114,7 +117,7 @@ namespace Project
 
         protected override void Initialize()
         {
-            Window.Title = "Our Game";
+            Window.Title = "Our Game Sucks";
 
             base.Initialize();
         }

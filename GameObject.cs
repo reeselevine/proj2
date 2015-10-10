@@ -22,12 +22,10 @@ namespace Project
         public GameObjectType type = GameObjectType.None;
         public Vector3 pos;
         public BasicEffect basicEffect;
+        public VertexInputLayout inputLayout;
 
         public abstract void Update(GameTime gametime);
-        public void Draw(GameTime gametime)
-        {
-           //do something
-        }
+        public abstract void Draw(GameTime gametime);
 
        
 
