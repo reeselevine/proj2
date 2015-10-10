@@ -33,7 +33,7 @@ namespace Project
     using SharpDX.Toolkit.Graphics;
     using SharpDX.Toolkit.Input;
 
-    public class LabGame : Game
+    public class GameController : Game
     {
         private GraphicsDeviceManager graphicsDeviceManager;
         public List<GameObject> gameObjects;
@@ -41,7 +41,7 @@ namespace Project
         private Stack<GameObject> removedGameObjects;
         private KeyboardManager keyboardManager;
         public KeyboardState keyboardState;
-        private Player player;
+        public Player player;
         public AccelerometerReading accelerometerReading;
         public GameInput input;
         public int score;
@@ -50,12 +50,7 @@ namespace Project
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
-        // Represents the camera's position and orientation
-        public Camera camera;
-
-        // Graphics assets
-        public Assets assets;
-
+   
         // Random number generator
         public Random random;
 
@@ -69,7 +64,7 @@ namespace Project
         /// <summary>
         /// Initializes a new instance of the <see cref="LabGame" /> class.
         /// </summary>
-        public LabGame(MainPage mainPage)
+        public GameController(MainPage mainPage)
         {
             // Creates a graphics manager. This is mandatory.
             graphicsDeviceManager = new GraphicsDeviceManager(this);
@@ -80,7 +75,6 @@ namespace Project
 
             // Create the keyboard manager
             keyboardManager = new KeyboardManager(this);
-            assets = new Assets(this);
             random = new Random();
             input = new GameInput();
 
@@ -112,7 +106,6 @@ namespace Project
             // Create game objects.
             player = new Player(this);
             gameObjects.Add(player);
-            gameObjects.Add(new EnemyController(this));
 
             // Create an input layout from the vertices
 
@@ -121,8 +114,7 @@ namespace Project
 
         protected override void Initialize()
         {
-            Window.Title = "Lab 4";
-            camera = new Camera(this);
+            Window.Title = "Our Game";
 
             base.Initialize();
         }
@@ -133,7 +125,7 @@ namespace Project
             {
                 keyboardState = keyboardManager.GetState();
                 flushAddedAndRemovedGameObjects();
-                camera.Update();
+                player.Update(gameTime);
                 accelerometerReading = input.accelerometer.GetCurrentReading();
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
@@ -222,11 +214,11 @@ namespace Project
 
         public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
         {
-            camera.pos.Z = camera.pos.Z * args.Delta.Scale;
+            player.pos.Z = player.pos.Z * args.Delta.Scale;
             // Update camera position for all game objects
             foreach (var obj in gameObjects)
             {
-                if (obj.basicEffect != null) { obj.basicEffect.View = camera.View; }
+                if (obj.basicEffect != null) { obj.basicEffect.View = player.View; }
                 obj.OnManipulationUpdated(sender, args);
             }
         }

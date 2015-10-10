@@ -4,84 +4,82 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Project1
+namespace Project
 {
 
 
     class Maze
     {
-        //fields
-        public Dictionary<string, int> DIRECTION;
-        private Dictionary<string, int> DX;
-        private Dictionary<string, int> DY;
-        private Dictionary<string, string> OPPOSITE;
+        /** Directions are stored as powers of 2 (so that a cell can encode its
+         * walls as a 4 bit number. ie 0110 means there are no South and East 
+         * edges present in this cell */
+        public const int N = 1, S = 2, E = 4, W = 8;
+        //Helper mapper to access a cell +/- 1 across a vertical wall
+        private Dictionary<int, int> DX;
+        //Helper mapper to access a cell +/- 1 across a horizontal wall
+        private Dictionary<int, int> DY;
+        //Opposite directional mapping
+        private Dictionary<int, int> OPPOSITE;
 
         private Random rng;
 
-        private class Edge
+        /** An Edge is a wall that connects two cells. It belongs to a cell at
+         * position x,y and is facing DIRECTION */
+        struct Edge
         {
             public int x;
             public int y;
-            public string direction;
-
-            public Edge(int x, int y, string direction)
-            {
-                this.x = x;
-                this.y = y;
-                this.direction = direction;
-            }
-
+            public int direction;
         }
 
+        //Other fields
         private List<Edge> edges;
         private int height;
         private int width;
+        //Used to display and draw the map
         public int[,] grid;
+        //Used to join sets of the maze
         public Tree[,] sets;
 
-        public Maze()
+        /** Constructs a WIDTH by HEIGHT maze */
+        public Maze(int width, int height)
         {
-
-            DIRECTION =
-                new Dictionary<string, int>() 
-                {
-                    {"N", 1}, {"S",2}, {"E", 4}, {"W", 8}
-                };
-            DX = new Dictionary<string, int>()
+            DX = new Dictionary<int, int>()
             {
-                {"E", 1}, {"W", -1}, {"N", 0}, {"S", 0}
+                {E, 1}, {W, -1}, {N, 0}, {S, 0}
             };
-            DY = new Dictionary<string, int>()
+            DY = new Dictionary<int, int>()
             {
-                {"E", 0}, {"W", 0}, {"N", -1}, {"S", 1}
+                {E, 0}, {W, 0}, {N, -1}, {S, 1}
             };
             OPPOSITE =
-                 new Dictionary<string, string>()
+                 new Dictionary<int, int>()
                 {
-                    {"E", "W"}, {"W", "E"}, {"N", "S"}, {"S", "N"}
+                    {E, W}, {W, E}, {N, S}, {S, N}
                 };
 
+            //Random number used for Fisher-Yates List shuffle
             rng = new Random();
-            height = 10;
-            width = 10;
+            this.height = height;
+            this.width = width;
             grid = new int[height, width];
             sets = new Tree[height, width];
             edges = new List<Edge>();
-            populateGrid();
-            populateSets();
-            populateEdges();
+            populate();
             Shuffle<Edge>(edges);
             joinSet();
         }
 
-
+        /** Get a cell and its neighbor via nEdge, if a cell and its neighbor
+         * are not connected, then join them via Tree.connect. Encodes the path
+         * via bitwise operation | on direction. */
         private void joinSet()
         {
             for (int i = 0; i < edges.Count; i++)
             {
                 Edge nEdge = edges[i];
                 int x = nEdge.x, y = nEdge.y;
-                string direction = nEdge.direction;
+                int direction = nEdge.direction;
 
                 int nx = x + DX[direction];
                 int ny = y + DY[direction];
@@ -91,52 +89,33 @@ namespace Project1
                 if (!set1.isConnected(set2))
                 {
                     set1.connect(set2);
-                    grid[y, x] = DIRECTION[direction] | grid[y, x];
-                    grid[ny, nx] = DIRECTION[OPPOSITE[direction]] | grid[ny, nx];
+                    grid[y, x] = direction | grid[y, x];
+                    grid[ny, nx] = OPPOSITE[direction] | grid[ny, nx];
                 }
             }
         }
 
 
 
-        //populates a Grid with 0's            
-        private void populateGrid()
+        /** populates this.grid with 0's
+         *  populates this.sets with new Tree()
+         *  populates this.edges with new edge */
+        private void populate()
         {
             for (int h = 0; h < height; h++)
             {
                 for (int w = 0; w < width; w++)
                 {
                     grid[h, w] = 0;
-                }
-            }
-        }
-
-        //populates sets with empty trees, all sets are disjoint
-        private void populateSets()
-        {
-            for (int h = 0; h < height; h++)
-            {
-                for (int w = 0; w < width; w++)
-                {
                     sets[h, w] = new Tree();
-                }
-            }
-        }
-
-        private void populateEdges()
-        {
-            for (int h = 0; h < height; h++)
-            {
-                for (int w = 0; w < width; w++)
-                {
                     if (h > 0)
                     {
-                        edges.Add(new Edge(w, h, "N"));
+                        edges.Add(new Edge { x = w, y = h, direction = N });
 
                     }
                     if (w > 0)
                     {
-                        edges.Add(new Edge(w, h, "W"));
+                        edges.Add(new Edge { x = w, y = h, direction = W });
                     }
                 }
             }
@@ -170,7 +149,7 @@ namespace Project1
                 str += "|";
                 for (int col = 0; col < width; col++)
                 {
-                    if ((grid[row, col] & DIRECTION["S"]) != 0)
+                    if ((grid[row, col] & S) != 0)
                     {
                         str += " ";
                     }
@@ -179,9 +158,9 @@ namespace Project1
                         str += "_";
                     }
 
-                    if ((grid[row, col] & DIRECTION["E"]) != 0)
+                    if ((grid[row, col] & E) != 0)
                     {
-                        if (((grid[row, col] | grid[row, col + 1]) & DIRECTION["S"]) != 0)
+                        if (((grid[row, col] | grid[row, col + 1]) & S) != 0)
                         {
                             str += " ";
                         }
