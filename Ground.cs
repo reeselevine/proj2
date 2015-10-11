@@ -16,14 +16,15 @@ namespace Project
         public Ground(GameController game, int width, int height)
         {
             this.game = game;
+            Color color = Color.Black;
             vertices = Buffer.Vertex.New(game.GraphicsDevice, new[] 
             {
-                new VertexPositionColor(new Vector3(0,0,0), Color.PapayaWhip),
-                new VertexPositionColor(new Vector3(0,0,height), Color.PapayaWhip),
-                new VertexPositionColor(new Vector3(width,0,height), Color.PapayaWhip),
-                new VertexPositionColor(new Vector3(0,0,0), Color.PapayaWhip),
-                new VertexPositionColor(new Vector3(width, 0, height), Color.PapayaWhip),
-                new VertexPositionColor(new Vector3(width, 0, 0), Color.PapayaWhip)
+                new VertexPositionColor(new Vector3(0,0,0), color),
+                new VertexPositionColor(new Vector3(0,0,height), color),
+                new VertexPositionColor(new Vector3(width,0,height), color),
+                new VertexPositionColor(new Vector3(0,0,0), color),
+                new VertexPositionColor(new Vector3(width, 0, height), color),
+                new VertexPositionColor(new Vector3(width, 0, 0), color)
             });
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
@@ -47,6 +48,8 @@ namespace Project
         {
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }
 }

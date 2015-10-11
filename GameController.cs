@@ -127,7 +127,7 @@ namespace Project
                 keyboardState = keyboardManager.GetState();
                 flushAddedAndRemovedGameObjects();
                 accelerometerReading = input.accelerometer.GetCurrentReading();
-                //player.Update(gameTime);
+                player.Update(gameTime);
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].Update(gameTime);
@@ -215,7 +215,7 @@ namespace Project
 
         public void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
         {
-            player.pos.Z = player.pos.Z * args.Delta.Scale;
+            player.OnManipulationUpdated(sender, args);
             // Update camera position for all game objects
             foreach (var obj in gameObjects)
             {
@@ -226,6 +226,7 @@ namespace Project
 
         public void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
+            player.OnManipulationCompleted(sender, args);
         }
 
     }

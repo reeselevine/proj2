@@ -22,7 +22,7 @@ namespace Project
         {
             this.game = game;
             this.walls = new List<GameObject>();
-            this.ground = new Ground(game, 10, 10);
+            this.ground = new Ground(game, 100, 100);
             Generate(10, 10);
         }
 

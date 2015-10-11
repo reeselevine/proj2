@@ -22,16 +22,21 @@ namespace Project
         public Vector3 oldPos, currentTarget;
         private float prevX;
         private float prevY;
-        private float speed;
+        private float Yaw;
+        private float scaleDown;
 
         public Player(GameController game)
         {
             this.game = game;
             type = GameObjectType.Player;
-            speed = 1;
+            Yaw = 0;
+            scaleDown = .001f;
+            prevX = 0;
+            prevY = 0;
             //camera controller
-            pos = new Vector3(0, 0, -10);
-            View = Matrix.LookAtLH(pos, new Vector3(0, 0, 0), Vector3.UnitY);
+            pos = new Vector3(0, 5, 0);
+            currentTarget = new Vector3(30, 0, 30);
+            View = Matrix.LookAtLH(pos, pos + currentTarget, Vector3.UnitY);
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.01f, 1000.0f);
             World = Matrix.Identity;
             this.game = game;
@@ -45,19 +50,19 @@ namespace Project
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
             // TASK 1: Determine velocity based on accelerometer reading
             //Tilt up and Down
-            pos.X += (float)game.accelerometerReading.AccelerationX;
-            pos.Y += (float)game.accelerometerReading.AccelerationY;
-            float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
+            //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
             float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
             //Move Forward
             if (game.keyboardState.IsKeyDown(Keys.W)) 
             {
-                pos += speed * currentTarget * time;
+                Vector3 temp = (currentTarget - pos);
+                temp.Normalize();
+                pos += temp;
+                currentTarget += temp;
             }
-            basicEffect.World = Matrix.Translation(pos);
 
-            float Yaw = ((float)Math.PI * 2 * deltaX);
-            prevX = (float)game.accelerometerReading.AccelerationX;
+            //float Yaw = ((float)Math.PI * 2 * deltaX);
+            //prevX = (float)game.accelerometerReading.AccelerationX;
 
             float Pitch = ((float)Math.PI * 2 * deltaY);
             prevY = (float)game.accelerometerReading.AccelerationY;
@@ -68,6 +73,17 @@ namespace Project
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
             View = Matrix.LookAtLH(pos, pos+currentTarget, Vector3.UnitY);
+        }
+
+        public override void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
+        {
+            float deltaX = -(float)args.Delta.Translation.X * scaleDown;
+            Yaw = (float)(Math.PI * 2 * deltaX);
+        }
+
+        public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
+        {
+            Yaw = 0;
         }
 
         public override void Draw(GameTime gametime)
