@@ -25,7 +25,7 @@ namespace Project
             this.game = game;
             this.walls = new List<GameObject>();
             this.ground = new Ground(game, 100, 100);
-            cellsize = 12;
+            cellsize = 10;
             Generate(10, 10);
         }
 
@@ -34,12 +34,16 @@ namespace Project
            maze = new Maze(width, height);
            for (int row = 0; row < width; row++)
            {
-               walls.Add(new Wall(game, new Vector3(row * cellsize, 0, 0),GameObjectType.EastWall));
+               walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, 0),GameObjectType.EastWall));
                for (int col = 0; col < height; col++)
                {
                    if ((maze.grid[row, col] & Maze.S) == 0)
                    {
-                       walls.Add(new Wall(game, new Vector3(row * cellsize, col * cellsize, 0), GameObjectType.SouthWall));
+                       walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall));
+                   }
+                   else
+                   {
+
                    }
                }
            }

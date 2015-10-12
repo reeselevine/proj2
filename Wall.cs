@@ -13,6 +13,7 @@ namespace Project
     {
         private Buffer<VertexPositionColor> vertices;
 
+        /** pos.y is actually the size of the cell!!! */
         public Wall(GameController game, Vector3 pos, GameObjectType wallType)
         {
             this.game = game;
