@@ -23,6 +23,7 @@ namespace Project
         private float prevX;
         private float prevY;
         private float Yaw;
+        private float Pitch;
         private float scaleDown;
 
         public Player(GameController game)
@@ -51,21 +52,22 @@ namespace Project
             // TASK 1: Determine velocity based on accelerometer reading
             //Tilt up and Down
             //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
-            float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
+            //float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
             //Move Forward
             if (game.keyboardState.IsKeyDown(Keys.W)) 
             {
                 Vector3 temp = (currentTarget - pos);
                 temp.Normalize();
-                pos += temp;
-                currentTarget += temp;
+                Vector3 change = new Vector3(temp.X, 0, temp.Z);
+                pos += change;
+                currentTarget += change;
             }
 
             //float Yaw = ((float)Math.PI * 2 * deltaX);
             //prevX = (float)game.accelerometerReading.AccelerationX;
 
-            float Pitch = ((float)Math.PI * 2 * deltaY);
-            prevY = (float)game.accelerometerReading.AccelerationY;
+            //float Pitch = ((float)Math.PI * 2 * deltaY);
+            //prevY = (float)game.accelerometerReading.AccelerationY;
 
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, Pitch, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
@@ -79,11 +81,14 @@ namespace Project
         {
             float deltaX = -(float)args.Delta.Translation.X * scaleDown;
             Yaw = (float)(Math.PI * 2 * deltaX);
+            float deltaY = (float)args.Delta.Translation.Y * scaleDown;
+            Pitch = (float)(Math.PI * 2 * deltaY);
         }
 
         public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             Yaw = 0;
+            Pitch = 0;
         }
 
         public override void Draw(GameTime gametime)
