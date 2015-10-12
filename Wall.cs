@@ -12,21 +12,24 @@ namespace Project
     class Wall : GameObject
     {
         private Buffer<VertexPositionColor> vertices;
+        private static float height = 5;
+        private float cellsize;
 
         /** pos.y is actually the size of the cell!!! */
         public Wall(GameController game, Vector3 pos, GameObjectType wallType)
         {
             this.game = game;
             this.pos = pos;
+            cellsize = pos.Y;
             type = wallType;
 
             if (type == GameObjectType.EastWall)
             {
-                vertices = makeEastWall(pos);
+                makeEastWall();
             }
             else
             {
-                vertices = makeSouthWall(pos);
+                makeSouthWall();
             }
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
@@ -39,14 +42,98 @@ namespace Project
             };
         }
 
-        private Buffer<VertexPositionColor> makeEastWall(Vector3 pos)
+        private void makeEastWall()
         {
-
+            Color color = Color.Plum;
+            float northSide = pos.X;
+            float southSide = pos.X + cellsize;
+            float westSide = pos.Z - cellsize / 4;
+            float eastSide = pos.Z + cellsize / 4;
+            vertices = Buffer.Vertex.New(game.GraphicsDevice,
+                new[] {
+                    // west side
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    // east side
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    // top
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    // north side
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    // south side
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color)
+                });
         }
 
-        private Buffer<VertexPositionColor> makeSouthWall(Vector3 pos)
+        private void makeSouthWall()
         {
-
+            Color color = Color.Aqua;
+            float northSide = pos.X - cellsize / 4;
+            float southSide = pos.X + cellsize / 4;
+            float westSide = pos.Z;
+            float eastSide = pos.Z + cellsize;
+            vertices = Buffer.Vertex.New(game.GraphicsDevice,
+                new[] {
+                    // north side
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    // south side
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    // east side
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    // west side
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    // top
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
+                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
+                    new VertexPositionColor(new Vector3(northSide, height, westSide), color)
+        });
         }
 
         public override void Update(GameTime gameTime)
@@ -60,6 +147,8 @@ namespace Project
         {
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
+            basicEffect.CurrentTechnique.Passes[0].Apply();
+            game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }
 }

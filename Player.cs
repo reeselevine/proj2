@@ -20,8 +20,6 @@ namespace Project
         public Matrix Projection;
         public Matrix World;
         public Vector3 oldPos, currentTarget;
-        private float prevX;
-        private float prevY;
         private float Yaw;
         private float Pitch;
         private float scaleDown;
@@ -32,10 +30,8 @@ namespace Project
             type = GameObjectType.Player;
             Yaw = 0;
             scaleDown = .001f;
-            prevX = 0;
-            prevY = 0;
             //camera controller
-            pos = new Vector3(0, 5, 0);
+            pos = new Vector3(0, 20, 0);
             currentTarget = new Vector3(30, 0, 30);
             View = Matrix.LookAtLH(pos, pos + currentTarget, Vector3.UnitY);
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.01f, 1000.0f);
@@ -54,9 +50,10 @@ namespace Project
             //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
             //float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
             //Move Forward
+            Vector3 temp;
             if (game.keyboardState.IsKeyDown(Keys.W)) 
             {
-                Vector3 temp = (currentTarget - pos);
+                temp = (currentTarget - pos);
                 temp.Normalize();
                 Vector3 change = new Vector3(temp.X, 0, temp.Z);
                 pos += change;

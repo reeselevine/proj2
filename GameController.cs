@@ -105,8 +105,10 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
-            mazeController = new MazeController(this);
+            mazeController = new MazeController(this, 10);
             gameObjects.Add(mazeController.ground);
+            gameObjects.AddRange(mazeController.walls);
+            System.Diagnostics.Debug.WriteLine(mazeController.walls.Count);
 
             // Create an input layout from the vertices
 

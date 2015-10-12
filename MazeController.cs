@@ -20,13 +20,13 @@ namespace Project
         private int cellsize;
 
         // Constructor.
-        public MazeController(GameController game)
+        public MazeController(GameController game, int size)
         {
             this.game = game;
-            this.walls = new List<GameObject>();
-            this.ground = new Ground(game, 100, 100);
             cellsize = 10;
-            Generate(10, 10);
+            this.walls = new List<GameObject>();
+            this.ground = new Ground(game, size * cellsize, size * cellsize);
+            Generate(size, size);
         }
 
 
@@ -41,10 +41,10 @@ namespace Project
                    {
                        walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall));
                    }
-                   else
-                   {
-
-                   }
+                   if ((maze.grid[row, col] & Maze.E) == 0)
+                    {
+                        walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, col * cellsize), GameObjectType.EastWall));
+                    }
                }
            }
        }
