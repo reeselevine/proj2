@@ -12,7 +12,7 @@ namespace Project
     using SharpDX.Toolkit.Graphics;
     public enum GameObjectType
     {
-        None, Player, Wall
+        None, Player, EastWall, SouthWall
     }
 
     // Super class for all game objects.

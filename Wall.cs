@@ -11,22 +11,55 @@ namespace Project
     using SharpDX.Toolkit.Graphics;
     class Wall : GameObject
     {
-  
-        public Wall(GameController game, Vector3 pos)
+        private Buffer<VertexPositionColor> vertices;
+
+        public Wall(GameController game, Vector3 pos, GameObjectType wallType)
         {
             this.game = game;
-            type = GameObjectType.Wall;
             this.pos = pos;
+            type = wallType;
+
+            if (type == GameObjectType.EastWall)
+            {
+                vertices = makeEastWall(pos);
+            }
+            else
+            {
+                vertices = makeSouthWall(pos);
+            }
+
+            inputLayout = VertexInputLayout.FromBuffer(0, vertices);
+            basicEffect = new BasicEffect(game.GraphicsDevice)
+            {
+                View = game.player.View,
+                Projection = game.player.Projection,
+                World = game.player.World,
+                VertexColorEnabled = true
+            };
+        }
+
+        private Buffer<VertexPositionColor> makeEastWall(Vector3 pos)
+        {
+
+        }
+
+        private Buffer<VertexPositionColor> makeSouthWall(Vector3 pos)
+        {
+
         }
 
         public override void Update(GameTime gameTime)
         {
-           
+            basicEffect.World = game.player.World;
+            basicEffect.View = game.player.View;
+            basicEffect.Projection = game.player.Projection;
         }
 
         public override void Draw(GameTime gametime)
         {
-            throw new NotImplementedException();
+            game.GraphicsDevice.SetVertexBuffer(vertices);
+            game.GraphicsDevice.SetVertexInputLayout(inputLayout);
         }
     }
 }
+

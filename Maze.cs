@@ -14,6 +14,7 @@ namespace Project
          * walls as a 4 bit number. ie 0110 means there are no South and East 
          * edges present in this cell */
         public const int N = 1, S = 2, E = 4, W = 8;
+
         //Helper mapper to access a cell +/- 1 across a vertical wall
         private Dictionary<int, int> DX;
         //Helper mapper to access a cell +/- 1 across a horizontal wall
