@@ -8,7 +8,7 @@ namespace Project
 {
 
 
-    class Maze
+    public class Maze
     {
         /** Directions are stored as powers of 2 (so that a cell can encode its
          * walls as a 4 bit number. ie 0110 means there are no South and East 

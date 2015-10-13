@@ -12,12 +12,12 @@ namespace Project
   
     
     // Enemy Controller class.
-    class MazeController : GameObject
+    public class MazeController : GameObject
     {
         public List<GameObject> walls;
         public GameObject ground;
-        private Maze maze;
-        private int cellsize;
+        public Maze maze;
+        public int cellsize;
 
         // Constructor.
         public MazeController(GameController game, int size)

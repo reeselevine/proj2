@@ -46,7 +46,7 @@ namespace Project
         public GameInput input;
         public int score;
         public MainPage mainPage;
-        private MazeController mazeController;
+        public MazeController mazeController;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
@@ -55,10 +55,11 @@ namespace Project
         public Random random;
 
         // World boundaries that indicate where the edge of the screen is for the camera.
-        public float boundaryLeft;
-        public float boundaryRight;
-        public float boundaryTop;
-        public float boundaryBottom;
+        public int size;
+        public float boundaryNorth;
+        public float boundaryEast;
+        public float boundarySouth;
+        public float boundaryWest;
 
         public bool started = false;
         /// <summary>
@@ -77,12 +78,12 @@ namespace Project
             keyboardManager = new KeyboardManager(this);
             random = new Random();
             input = new GameInput();
-
+            size = 10;
             // Set boundaries.
-            boundaryLeft = -4.5f;
-            boundaryRight = 4.5f;
-            boundaryTop = 4;
-            boundaryBottom = -4.5f;
+            boundaryNorth = 2.6f;
+            boundaryEast = size * 10 - 2.6f;
+            boundarySouth = size * 10 - 2.6f;
+            boundaryWest = 2.6f;
 
             // Initialise event handling.
             input.gestureRecognizer.Tapped += Tapped;
@@ -105,10 +106,9 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
-            mazeController = new MazeController(this, 10);
+            mazeController = new MazeController(this, size);
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
-            System.Diagnostics.Debug.WriteLine(mazeController.walls.Count);
 
             // Create an input layout from the vertices
 
