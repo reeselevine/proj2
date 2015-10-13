@@ -32,18 +32,22 @@ namespace Project
 
        public void Generate(int width, int height) {
            maze = new Maze(width, height);
-           for (int row = 0; row < width; row++)
+           for (int i = 0; i < width; i++)
+            {
+                walls.Add(new Wall(game, new Vector3(0, cellsize, i * cellsize), GameObjectType.SouthWall));
+            }
+           for (int row = 0; row < height; row++)
            {
                walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, 0),GameObjectType.EastWall));
-               for (int col = 0; col < height; col++)
+               for (int col = 0; col < width; col++)
                {
-                   if ((maze.grid[row, col] & Maze.S) == 0)
-                   {
-                       walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall));
-                   }
+                    if ((maze.grid[row, col] & Maze.S) == 0)
+                    {
+                        walls.Add(new Wall(game, new Vector3((row + 1) * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall));
+                    }
                    if ((maze.grid[row, col] & Maze.E) == 0)
                     {
-                        walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, col * cellsize), GameObjectType.EastWall));
+                        walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, (col + 1) * cellsize), GameObjectType.EastWall));
                     }
                }
            }

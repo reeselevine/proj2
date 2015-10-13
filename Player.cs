@@ -44,6 +44,7 @@ namespace Project
         // Frame update.
         public override void Update(GameTime gameTime)
         {
+            System.Diagnostics.Debug.WriteLine(game.accelerometerReading.AccelerationY);
             float time = (float)gameTime.TotalGameTime.TotalSeconds;
             // TASK 1: Determine velocity based on accelerometer reading
             //Tilt up and Down
@@ -54,24 +55,19 @@ namespace Project
             if (game.keyboardState.IsKeyDown(Keys.W)) 
             {
                 temp = (currentTarget - pos);
-                temp.Normalize();
+                //temp.Normalize();
                 Vector3 change = new Vector3(temp.X, 0, temp.Z);
+                change.Normalize();
                 pos += change;
                 currentTarget += change;
             }
-
-            //float Yaw = ((float)Math.PI * 2 * deltaX);
-            //prevX = (float)game.accelerometerReading.AccelerationX;
-
-            //float Pitch = ((float)Math.PI * 2 * deltaY);
-            //prevY = (float)game.accelerometerReading.AccelerationY;
 
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, Pitch, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
 
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
-            View = Matrix.LookAtLH(pos, pos+currentTarget, Vector3.UnitY);
+            View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
         }
 
         public override void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
@@ -79,7 +75,7 @@ namespace Project
             float deltaX = -(float)args.Delta.Translation.X * scaleDown;
             Yaw = (float)(Math.PI * 2 * deltaX);
             float deltaY = (float)args.Delta.Translation.Y * scaleDown;
-            Pitch = (float)(Math.PI * 2 * deltaY);
+            Pitch = (float)(Math.PI * deltaY);
         }
 
         public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
