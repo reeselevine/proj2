@@ -22,6 +22,9 @@ namespace Project
         private float Yaw;
         private float Pitch;
         private float scaleDown;
+        private float collisionError;
+        private float prevY;
+        private float deltaError;
 
         public Player(GameController game)
         {
@@ -29,6 +32,9 @@ namespace Project
             type = GameObjectType.Player;
             Yaw = 0;
             scaleDown = .001f;
+            collisionError = .2f;
+            deltaError = .01f;
+            prevY = 0f;
             //camera controller
             pos = new Vector3(5, 1, 5);
             currentTarget = new Vector3(30, 0, 30);
@@ -43,20 +49,24 @@ namespace Project
         // Frame update.
         public override void Update(GameTime gameTime)
         {
-            //System.Diagnostics.Debug.WriteLine(game.accelerometerReading.AccelerationY);
-            float time = (float)gameTime.TotalGameTime.TotalSeconds;
+            if (prevY == 0)
+            {
+                prevY = (float)game.accelerometerReading.AccelerationY;
+            }
             // TASK 1: Determine velocity based on accelerometer reading
             //Tilt up and Down
             //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
-            //float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
+            float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
+            System.Diagnostics.Debug.WriteLine(prevY);
+            System.Diagnostics.Debug.WriteLine(deltaY);
             //Move Forward
             Vector3 temp;
-            if (game.keyboardState.IsKeyDown(Keys.W)) 
+            if (game.keyboardState.IsKeyDown(Keys.W) || deltaY > deltaError) 
             {
                 temp = (currentTarget - pos);
                 Vector3 change = new Vector3(temp.X, 0, temp.Z);
                 change.Normalize();
-                change /= 2;
+                change /= 6;
                 pos += change;
                 currentTarget += change;
                 if (CollisionDetected())
@@ -81,27 +91,28 @@ namespace Project
             {
                 return true;
             }
-            double collisionBarrier = game.mazeController.cellsize / 2;
+            float collisionRadius = (float)game.mazeController.cellsize / 4f + collisionError;
             int row = (int)Math.Floor(pos.X / game.mazeController.cellsize);
             int col = (int)Math.Floor(pos.Z / game.mazeController.cellsize);
             float x = pos.X % game.mazeController.cellsize;
             float z = pos.Z % game.mazeController.cellsize;
-            int position = game.mazeController.maze.grid[row, col];
-            if (x >= 3 * collisionBarrier && (game.mazeController.maze.grid[row, col] & Maze.S) == 0)
+            if (x >= (3 * collisionRadius - 4 * collisionError) &&
+                (game.mazeController.maze.grid[row, col] & Maze.S) == 0)
             {
                 return true;
             }
-            else if (x <= collisionBarrier && row != 0 &&
+            else if (x <= collisionRadius && row != 0 &&
                 (game.mazeController.maze.grid[row - 1, col] & Maze.S) == 0)
             {
                 return true;
             }
-            else if (z <= collisionBarrier && col != 0 &&
+            else if (z <= collisionRadius && col != 0 &&
                 (game.mazeController.maze.grid[row, col - 1] & Maze.E) == 0)
             {
                 return true;
             }
-            else if (z >= 3 * collisionBarrier && (game.mazeController.maze.grid[row, col] & Maze.E) == 0)
+            else if (z >= (3 * collisionRadius - 4 * collisionError) &&
+                (game.mazeController.maze.grid[row, col] & Maze.E) == 0)
             {
                 return true;
             }
