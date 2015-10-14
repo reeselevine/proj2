@@ -57,8 +57,6 @@ namespace Project
             //Tilt up and Down
             //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
             float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
-            System.Diagnostics.Debug.WriteLine(prevY);
-            System.Diagnostics.Debug.WriteLine(deltaY);
             //Move Forward
             Vector3 temp;
             if (game.keyboardState.IsKeyDown(Keys.W) || deltaY > deltaError) 
@@ -136,6 +134,17 @@ namespace Project
         public override void Draw(GameTime gametime)
         {
             throw new NotImplementedException();
+        }
+
+        public Boolean HasWon()
+        {
+            int row = (int)Math.Floor(pos.X / game.mazeController.cellsize);
+            int col = (int)Math.Floor(pos.Z / game.mazeController.cellsize);
+            if (row == game.size - 1 && col == game.size - 1)
+            {
+                return true;
+            }
+            return false;
         }
 
     }

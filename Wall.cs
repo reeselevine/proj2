@@ -47,7 +47,8 @@ namespace Project
                 View = game.player.View,
                 Projection = game.player.Projection,
                 World = game.player.World,
-                VertexColorEnabled = true
+                VertexColorEnabled = true,
+                LightingEnabled = false
             };
         }
 

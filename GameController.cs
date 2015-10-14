@@ -124,9 +124,14 @@ namespace Project
 
         protected override void Update(GameTime gameTime)
         {
+            keyboardState = keyboardManager.GetState();
             if (started)
             {
-                keyboardState = keyboardManager.GetState();
+                if (player.HasWon())
+                {
+                    player.pos = new Vector3(5, 1, 5);
+                    mainPage.EndGame();
+                }
                 flushAddedAndRemovedGameObjects();
                 accelerometerReading = input.accelerometer.GetCurrentReading();
                 player.Update(gameTime);
@@ -134,16 +139,13 @@ namespace Project
                 {
                     gameObjects[i].Update(gameTime);
                 }
-
                 mainPage.UpdateScore(score);
-
-                if (keyboardState.IsKeyDown(Keys.Escape))
-                {
-                    this.Exit();
-                    this.Dispose();
-                    App.Current.Exit();
-                }
-                // Handle base.Update
+            }
+            if (keyboardState.IsKeyDown(Keys.Escape))
+            {
+                this.Exit();
+                this.Dispose();
+                App.Current.Exit();
             }
             base.Update(gameTime);
 

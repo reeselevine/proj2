@@ -54,5 +54,11 @@ namespace Project
             this.Children.Remove(mainMenu);
             game.started = true;
         }
+
+        public void EndGame()
+        {
+            this.Children.Add(mainMenu);
+            game.started = false;
+        }
     }
 }
