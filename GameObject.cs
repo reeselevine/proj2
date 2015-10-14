@@ -23,6 +23,7 @@ namespace Project
         public Vector3 pos;
         public BasicEffect basicEffect;
         public VertexInputLayout inputLayout;
+        public Effect effect;
 
         public abstract void Update(GameTime gametime);
         public abstract void Draw(GameTime gametime);

@@ -11,9 +11,18 @@ namespace Project
     using SharpDX.Toolkit.Graphics;
     class Wall : GameObject
     {
-        private Buffer<VertexPositionColor> vertices;
+        private Buffer<VertexPositionNormalColor> vertices;
         private static float height = 5;
         private float cellsize;
+        //Vertex Normals for Walls
+        Vector3 BOTTOM_NORTHWEST_NORMAL = new Vector3(-0.333f, -0.333f, -0.333f);
+        Vector3 TOP_NORTHWEST_NORMAL = new Vector3(-0.333f, 0.333f, -0.333f);
+        Vector3 TOP_SOUTHWEST_NORMAL = new Vector3(0.333f, 0.333f, -0.333f);
+        Vector3 BOTTOM_SOUTHWEST_NORMAL = new Vector3(0.333f, -0.333f, -0.333f);
+        Vector3 BOTTOM_NORTHEAST_NORMAL = new Vector3(-0.333f, -0.333f, 0.333f);
+        Vector3 BOTTOM_SOUTHEAST_NORMAL = new Vector3(0.333f, -0.333f, 0.333f);
+        Vector3 TOP_NORTHEAST_NORMAL = new Vector3(-0.333f, 0.333f, 0.333f);
+        Vector3 TOP_SOUTHEAST_NORMAL = new Vector3(0.333f, 0.333f, 0.333f);
 
         /** pos.y is actually the size of the cell!!! */
         public Wall(GameController game, Vector3 pos, GameObjectType wallType)
@@ -31,7 +40,7 @@ namespace Project
             {
                 makeSouthWall();
             }
-
+            effect = game.Content.Load<Effect>("Phong");
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
@@ -52,40 +61,40 @@ namespace Project
             vertices = Buffer.Vertex.New(game.GraphicsDevice,
                 new[] {
                     // west side
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
                     // east side
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, eastSide), BOTTOM_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
                     // top
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
                     // north side
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
                     // south side
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color)
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, eastSide), BOTTOM_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color)
                 });
         }
 
@@ -99,40 +108,40 @@ namespace Project
             vertices = Buffer.Vertex.New(game.GraphicsDevice,
                 new[] {
                     // north side
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
                     // south side
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, eastSide), BOTTOM_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color),
                     // east side
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, eastSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, eastSide), BOTTOM_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, eastSide), BOTTOM_NORTHEAST_NORMAL, color),
                     // west side
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(southSide, 0, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, 0, westSide), color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, 0, westSide), BOTTOM_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, 0, westSide), BOTTOM_NORTHWEST_NORMAL, color),
                     // top
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, eastSide), color),
-                    new VertexPositionColor(new Vector3(southSide, height, westSide), color),
-                    new VertexPositionColor(new Vector3(northSide, height, westSide), color)
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, eastSide), TOP_NORTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, eastSide), TOP_SOUTHEAST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(southSide, height, westSide), TOP_SOUTHWEST_NORMAL, color),
+                    new VertexPositionNormalColor(new Vector3(northSide, height, westSide), TOP_NORTHWEST_NORMAL, color)
         });
         }
 
@@ -145,6 +154,15 @@ namespace Project
 
         public override void Draw(GameTime gametime)
         {
+            // Setup the effect parameters
+            effect.Parameters["World"].SetValue(game.player.World);
+            effect.Parameters["Projection"].SetValue(game.player.Projection);
+            effect.Parameters["View"].SetValue(game.player.View);
+            effect.Parameters["cameraPos"].SetValue(game.player.pos);
+            Matrix WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(game.player.World));
+            effect.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
+
+            
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             basicEffect.CurrentTechnique.Passes[0].Apply();
