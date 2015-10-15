@@ -52,6 +52,7 @@ namespace Project
         public void StartGame()
         {
             this.Children.Remove(mainMenu);
+            game.PrepareForNewGame();
             game.started = true;
         }
 

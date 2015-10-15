@@ -106,11 +106,6 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
-            mazeController = new MazeController(this, size);
-            gameObjects.Add(mazeController.ground);
-            gameObjects.AddRange(mazeController.walls);
-
-            // Create an input layout from the vertices
 
             base.LoadContent();
         }
@@ -129,8 +124,8 @@ namespace Project
             {
                 if (player.HasWon())
                 {
-                    player.pos = new Vector3(5, 1, 5);
                     mainPage.EndGame();
+                    PrepareForNewGame();
                 }
                 flushAddedAndRemovedGameObjects();
                 accelerometerReading = input.accelerometer.GetCurrentReading();
@@ -200,6 +195,16 @@ namespace Project
         {
             while (addedGameObjects.Count > 0) { gameObjects.Add(addedGameObjects.Pop()); }
             while (removedGameObjects.Count > 0) { gameObjects.Remove(removedGameObjects.Pop()); }
+        }
+
+        public void PrepareForNewGame()
+        {
+            gameObjects.Clear();
+            player.pos = new Vector3(5, 1, 5);
+            player.prevY = 0;
+            mazeController = new MazeController(this, size);
+            gameObjects.Add(mazeController.ground);
+            gameObjects.AddRange(mazeController.walls);
         }
 
         public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)

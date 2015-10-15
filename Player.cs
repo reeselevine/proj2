@@ -20,25 +20,28 @@ namespace Project
         public Matrix World;
         public Vector3 oldPos, currentTarget;
         private float Yaw;
-        private float Pitch;
+        private float yTarget;
+        private float yClamp;
         private float scaleDown;
         private float collisionError;
-        private float prevY;
         private float deltaError;
+        public float prevY;
 
         public Player(GameController game)
         {
             this.game = game;
             type = GameObjectType.Player;
             Yaw = 0;
+            yTarget = 1;
+            yClamp = 10;
             scaleDown = .001f;
             collisionError = .2f;
             deltaError = .01f;
             prevY = 0f;
             //camera controller
             pos = new Vector3(5, 1, 5);
-            currentTarget = new Vector3(30, 0, 30);
-            View = Matrix.LookAtLH(pos, pos + currentTarget, Vector3.UnitY);
+            currentTarget = new Vector3(30, 1, 30);
+            View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.01f, 1000.0f);
             World = Matrix.Identity;
             this.game = game;
@@ -76,7 +79,8 @@ namespace Project
 
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, 0, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
-
+            currentTarget.Y = yTarget;
+            System.Diagnostics.Debug.WriteLine(Yaw);
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
             View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
@@ -121,14 +125,14 @@ namespace Project
         {
             float deltaX = -(float)args.Delta.Translation.X * scaleDown;
             Yaw = (float)(Math.PI * 2 * deltaX);
-            float deltaY = (float)args.Delta.Translation.Y * scaleDown;
-            Pitch = (float)(Math.PI * deltaY);
+            float deltaY = (float)args.Delta.Translation.Y / 6;
+            yTarget +=  deltaY;
+            yTarget = (yTarget > yClamp) ? yClamp : ((yTarget < -yClamp) ? -yClamp : yTarget);
         }
 
         public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
         {
             Yaw = 0;
-            Pitch = 0;
         }
 
         public override void Draw(GameTime gametime)
