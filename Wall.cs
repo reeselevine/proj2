@@ -12,7 +12,7 @@ namespace Project
     class Wall : GameObject
     {
         private Buffer<VertexPositionNormalColor> vertices;
-        private static float height = 5;
+        private static float height = 2;
         private float cellsize;
         //Vertex Normals for Walls
         Vector3 BOTTOM_NORTHWEST_NORMAL = new Vector3(-0.333f, -0.333f, -0.333f);
@@ -40,7 +40,9 @@ namespace Project
             {
                 makeSouthWall();
             }
-            effect = game.Content.Load<Effect>("Phong");
+            effect = game.Content.Load<Effect>("Gouraud");
+            outlineShader = game.Content.Load<Effect>("Phong");
+
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
             basicEffect = new BasicEffect(game.GraphicsDevice)
             {
@@ -156,19 +158,26 @@ namespace Project
         public override void Draw(GameTime gametime)
         {
             // Setup the effect parameters
-            effect.Parameters["World"].SetValue(game.player.World);
             effect.Parameters["Projection"].SetValue(game.player.Projection);
+            effect.Parameters["World"].SetValue(game.player.World);
             effect.Parameters["View"].SetValue(game.player.View);
             effect.Parameters["cameraPos"].SetValue(game.player.pos);
             Matrix WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(game.player.World));
             effect.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
+            outlineShader.Parameters["World"].SetValue(game.player.World);//Erreur ici : NullReferenceException<br>outlineShader.Parameters["View"].SetValue(cam.view);
+            outlineShader.Parameters["Projection"].SetValue(game.player.Projection);
+            outlineShader.Parameters["View"].SetValue(game.player.View);
+            outlineShader.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
+            outlineShader.Parameters["cameraPos"].SetValue(game.player.pos);
 
-            
+            /** effect holds the current shader effect for Walls,
+             * delete comments on basicEffect to deactivate shader */
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
-            basicEffect.CurrentTechnique.Passes[0].Apply();
+            effect.CurrentTechnique.Passes[0].Apply();
+            //basicEffect.CurrentTechnique.Passes[0].Apply();
+            //outlineShader.CurrentTechnique.Passes[0].Apply();
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }
 }
-

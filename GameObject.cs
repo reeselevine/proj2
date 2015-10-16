@@ -24,7 +24,7 @@ namespace Project
         public BasicEffect basicEffect;
         public VertexInputLayout inputLayout;
         public Effect effect;
-
+        public Effect outlineShader;
         public abstract void Update(GameTime gametime);
         public abstract void Draw(GameTime gametime);
 

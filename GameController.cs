@@ -42,6 +42,7 @@ namespace Project
         private KeyboardManager keyboardManager;
         public KeyboardState keyboardState;
         public Player player;
+        public LightBeam lightBeam;
         public AccelerometerReading accelerometerReading;
         public GameInput input;
         public int score;
@@ -69,7 +70,7 @@ namespace Project
         {
             // Creates a graphics manager. This is mandatory.
             graphicsDeviceManager = new GraphicsDeviceManager(this);
-
+ 
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
@@ -106,7 +107,6 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
-
             base.LoadContent();
         }
 
@@ -152,7 +152,6 @@ namespace Project
             {
                 // Clears the screen with the Color.CornflowerBlue
                 GraphicsDevice.Clear(Color.CornflowerBlue);
-
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].Draw(gameTime);
@@ -203,8 +202,10 @@ namespace Project
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
             mazeController = new MazeController(this, size);
+            lightBeam = new LightBeam(this, 0.5f, 1000);
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
+            gameObjects.Add(lightBeam);
         }
 
         public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)

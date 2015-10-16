@@ -41,6 +41,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Ground.cs" />
+    <Compile Include="LightBeam.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
     <Compile Include="Wall.cs" />
     <Compile Include="MazeController.cs" />

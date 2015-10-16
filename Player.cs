@@ -82,7 +82,7 @@ namespace Project
             currentTarget.Y = yTarget;
             System.Diagnostics.Debug.WriteLine(Yaw);
             //Camera update: Screen resize projection matrix changes
-            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 100.0f);
+            Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f);
             View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
         }
 
