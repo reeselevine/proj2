@@ -11,9 +11,8 @@ namespace Project
     using SharpDX.Toolkit.Graphics;
     public class Ghost : GameObject
     {
-        private static Random random = new Random();
         private Buffer<VertexPositionColor> vertices;
-        private float size;
+        public float size;
         private float height;
         private Color color;
         private int seek;
@@ -28,7 +27,7 @@ namespace Project
             height = 0.5f;
             seek = 0;
             delay = 240;
-            Ghost.Spawn(this);
+            Spawn();
             speed = .05f;
             direction = new Vector3(game.player.pos.X - pos.X, 0, game.player.pos.Z - pos.Z);
             UpdateVertices();
@@ -44,10 +43,10 @@ namespace Project
         }
 
         // Spawns a ghost somewhere in the boundaries of the game map
-        private static void Spawn(Ghost ghost)
+        private void Spawn()
         {
-            ghost.pos = new Vector3(random.NextFloat(0, ghost.game.size * ghost.game.mazeController.cellsize),
-                1, random.NextFloat(0, ghost.game.size * ghost.game.mazeController.cellsize));
+            pos = new Vector3(game.random.NextFloat(0, game.size * game.mazeController.cellsize),
+                1, game.random.NextFloat(0, game.size * game.mazeController.cellsize));
         }
 
         public override void Update(GameTime gameTime)

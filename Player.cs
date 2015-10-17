@@ -26,6 +26,10 @@ namespace Project
         private float collisionError;
         private float deltaError;
         public float prevY;
+        public int ghostEncounters;
+        public Boolean invincible;
+        private int invincibilityCounter;
+        private int invincibilityTimer;
 
         public Player(GameController game)
         {
@@ -38,6 +42,10 @@ namespace Project
             collisionError = .2f;
             deltaError = .05f;
             prevY = 0f;
+            ghostEncounters = 3;
+            invincible = false;
+            invincibilityCounter = 0;
+            invincibilityTimer = 120;
             //camera controller
             pos = new Vector3(5, 1, 5);
             currentTarget = new Vector3(30, 1, 30);
@@ -47,8 +55,6 @@ namespace Project
             this.game = game;
         }
 
-       
-
         // Frame update.
         public override void Update(GameTime gameTime)
         {
@@ -56,9 +62,15 @@ namespace Project
             {
                 prevY = (float)game.accelerometerReading.AccelerationY;
             }
-            // TASK 1: Determine velocity based on accelerometer reading
-            //Tilt up and Down
-            //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
+            if (invincible)
+            {
+                invincibilityCounter++;
+                if (invincibilityCounter % invincibilityTimer == 0)
+                {
+                    invincible = false;
+                    invincibilityCounter = 0;
+                }
+            }
             float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
             //Move Forward
             Vector3 temp;
@@ -114,6 +126,16 @@ namespace Project
             }
             else if (z >= (3 * collisionRadius - 4 * collisionError) &&
                 (game.mazeController.maze.grid[row, col] & Maze.E) == 0)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public Boolean IsEncountering(Ghost ghost)
+        {
+            if (pos.X > ghost.pos.X && pos.X < ghost.pos.X + ghost.size &&
+                pos.Z > ghost.pos.Z && pos.Z < ghost.pos.Z + ghost.size)
             {
                 return true;
             }

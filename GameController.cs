@@ -37,6 +37,7 @@ namespace Project
     {
         private GraphicsDeviceManager graphicsDeviceManager;
         public List<GameObject> gameObjects;
+        public List<Ghost> ghosts;
         private Stack<GameObject> addedGameObjects;
         private Stack<GameObject> removedGameObjects;
         private KeyboardManager keyboardManager;
@@ -48,10 +49,8 @@ namespace Project
         public int score;
         public MainPage mainPage;
         public MazeController mazeController;
-        private Random ghostRandom;
         private double generateGhost;
         public int maxGhosts;
-        public int numGhosts;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
@@ -85,7 +84,6 @@ namespace Project
             input = new GameInput();
             size = 10;
             maxGhosts = 10;
-            ghostRandom = new Random();
             generateGhost = 0.99;
             // Set boundaries.
             boundaryNorth = 2.6f;
@@ -111,6 +109,7 @@ namespace Project
             gameObjects = new List<GameObject>();
             addedGameObjects = new Stack<GameObject>();
             removedGameObjects = new Stack<GameObject>();
+            ghosts = new List<Ghost>();
 
             // Create game objects.
             player = new Player(this);
@@ -133,6 +132,7 @@ namespace Project
                 {
                     mainPage.EndGame();
                     PrepareForNewGame();
+                    return;
                 }
                 DoGhostStuff();
                 flushAddedAndRemovedGameObjects();
@@ -207,8 +207,10 @@ namespace Project
         public void PrepareForNewGame()
         {
             gameObjects.Clear();
+            ghosts.Clear();
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
+            player.ghostEncounters = 3;
             mazeController = new MazeController(this, size);
             lightBeam = new LightBeam(this, 0.5f, 1000);
             gameObjects.Add(mazeController.ground);
@@ -219,13 +221,27 @@ namespace Project
         private void DoGhostStuff()
         {
             // check to see if player is dead
-            // add a ghost sometimes
-            double next = ghostRandom.NextDouble();
-            System.Diagnostics.Debug.WriteLine(next);
-            if (numGhosts < maxGhosts && next >= generateGhost)
+            foreach (Ghost ghost in ghosts)
             {
-                gameObjects.Add(new Ghost(this));
-                numGhosts++;
+                if (!player.invincible && player.IsEncountering(ghost))
+                {
+                    player.ghostEncounters--;
+                    if (player.ghostEncounters == 0)
+                    {
+                        mainPage.EndGame();
+                        PrepareForNewGame();
+                        return;
+                    }
+                    player.invincible = true;
+                }
+            }
+            // add a ghost sometimes
+            double next = random.NextDouble();
+            if (ghosts.Count < maxGhosts && next > generateGhost)
+            {
+                Ghost ghost = new Ghost(this);
+                gameObjects.Add(ghost);
+                ghosts.Add(ghost);
             }
         }
 
