@@ -12,7 +12,7 @@ namespace Project
     class Wall : GameObject
     {
         private Buffer<VertexPositionNormalColor> vertices;
-        private static float height = 2;
+        private static float height = 5;
         private float cellsize;
         //Vertex Normals for Walls
         Vector3 BOTTOM_NORTHWEST_NORMAL = new Vector3(-0.333f, -0.333f, -0.333f);

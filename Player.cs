@@ -33,10 +33,10 @@ namespace Project
             type = GameObjectType.Player;
             Yaw = 0;
             yTarget = 1;
-            yClamp = 10;
+            yClamp = 50;
             scaleDown = .001f;
             collisionError = .2f;
-            deltaError = .01f;
+            deltaError = .05f;
             prevY = 0f;
             //camera controller
             pos = new Vector3(5, 1, 5);
@@ -80,7 +80,6 @@ namespace Project
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, 0, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
             currentTarget.Y = yTarget;
-            System.Diagnostics.Debug.WriteLine(Yaw);
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f);
             View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
@@ -146,7 +145,14 @@ namespace Project
             int col = (int)Math.Floor(pos.Z / game.mazeController.cellsize);
             if (row == game.size - 1 && col == game.size - 1)
             {
-                return true;
+                float winBoundary = game.mazeController.cellsize / 4;
+                float x = pos.X % game.mazeController.cellsize;
+                float z = pos.Z % game.mazeController.cellsize;
+                if (x > winBoundary && x < winBoundary * 3 &&
+                    z > winBoundary && z < winBoundary * 3)
+                {
+                    return true;
+                }
             }
             return false;
         }

@@ -48,6 +48,10 @@ namespace Project
         public int score;
         public MainPage mainPage;
         public MazeController mazeController;
+        private Random ghostRandom;
+        private double generateGhost;
+        public int maxGhosts;
+        public int numGhosts;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
@@ -80,6 +84,9 @@ namespace Project
             random = new Random();
             input = new GameInput();
             size = 10;
+            maxGhosts = 10;
+            ghostRandom = new Random();
+            generateGhost = 0.99;
             // Set boundaries.
             boundaryNorth = 2.6f;
             boundaryEast = size * 10 - 2.6f;
@@ -127,6 +134,7 @@ namespace Project
                     mainPage.EndGame();
                     PrepareForNewGame();
                 }
+                DoGhostStuff();
                 flushAddedAndRemovedGameObjects();
                 accelerometerReading = input.accelerometer.GetCurrentReading();
                 player.Update(gameTime);
@@ -206,6 +214,19 @@ namespace Project
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
             gameObjects.Add(lightBeam);
+        }
+
+        private void DoGhostStuff()
+        {
+            // check to see if player is dead
+            // add a ghost sometimes
+            double next = ghostRandom.NextDouble();
+            System.Diagnostics.Debug.WriteLine(next);
+            if (numGhosts < maxGhosts && next >= generateGhost)
+            {
+                gameObjects.Add(new Ghost(this));
+                numGhosts++;
+            }
         }
 
         public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)
