@@ -25,31 +25,33 @@ namespace Project
     {
 
         private MainPage parent;
+
         public Difficulty(MainPage parent)
         {
-            this.InitializeComponent();
             this.parent = parent;
+            this.InitializeComponent();
         }
 
         private void GoBack(object sender, RoutedEventArgs e)
         {
             parent.Children.Add(parent.mainMenu);
-            parent.Children.Remove(this);
+
+           parent.Children.Remove(this);
         }
 
         // TASK 3: Function for setting difficulty
         private void changeDifficultySize(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-           // if (parent.game != null) { parent.game.difficulty = (float)e.NewValue; }
+            if (parent.game != null) { parent.game.difficultySize = (int)e.NewValue; }
         }
         private void changeDifficultyGhost(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            // if (parent.game != null) { parent.game.difficulty = (float)e.NewValue; }
+            if (parent.game != null) { parent.game.difficultyGhost = (int)e.NewValue; }
         }
 
         private void changeDifficultyLives(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            // if (parent.game != null) { parent.game.difficulty = (float)e.NewValue; }
+            if (parent.game != null) { parent.game.difficultyLives = (int)e.NewValue; }
         }
 
     }

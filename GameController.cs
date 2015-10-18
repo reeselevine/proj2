@@ -52,9 +52,10 @@ namespace Project
         private double generateGhost;
         public int maxGhosts;
         // TASK 4: Use this to represent difficulty
-        public float difficulty;
-        public Winner winner;
-        
+        public int difficultySize;
+        public int difficultyGhost;
+        public int difficultyLives;
+       public Winner winner;
 
    
         // Random number generator
@@ -76,6 +77,8 @@ namespace Project
             // Creates a graphics manager. This is mandatory.
             graphicsDeviceManager = new GraphicsDeviceManager(this);
  
+            //Slider Values
+
             // Setup the relative directory to the executable directory
             // for loading contents with the ContentManager
             Content.RootDirectory = "Content";
@@ -85,7 +88,7 @@ namespace Project
             random = new Random();
             input = new GameInput();
             size = 10;
-            maxGhosts = 10;
+            maxGhosts = difficultyGhost;
             generateGhost = 0.99;
             // Set boundaries.
             boundaryNorth = 2.6f;
@@ -102,7 +105,6 @@ namespace Project
             this.mainPage = mainPage;
 
             score = 3;
-            difficulty = 1;
         }
 
         protected override void LoadContent()

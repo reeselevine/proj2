@@ -30,7 +30,7 @@ namespace Project
         public Boolean invincible;
         private int invincibilityCounter;
         private int invincibilityTimer;
-
+        public int difficultyLives;
         public Player(GameController game)
         {
             this.game = game;
@@ -42,7 +42,7 @@ namespace Project
             collisionError = .2f;
             deltaError = .05f;
             prevY = 0f;
-            ghostEncounters = 3;
+            ghostEncounters = difficultyLives;
             invincible = false;
             invincibilityCounter = 0;
             invincibilityTimer = 120;

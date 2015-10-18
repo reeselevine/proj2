@@ -47,11 +47,27 @@ namespace Project
             parent.Children.Remove(this);
         }
 
-        private void LoadDifficulty(object sender, RoutedEventArgs e)
+        private void changeDifficultySize(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            parent.Children.Add(new Difficulty(parent));
-            parent.Children.Remove(this);
+            if (parent.game != null) { parent.game.difficultySize = (int)e.NewValue;
+            }
+            parent.game.difficultySize = (int)sldSize.Value;
+
         }
+        private void changeDifficultyGhost(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            if (parent.game != null) { parent.game.difficultyGhost = (int)e.NewValue; }
+            parent.game.difficultyGhost = (int)sldGhost.Value;
+
+        }
+
+        private void changeDifficultyLives(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
+        {
+            if (parent.game != null) { parent.game.difficultyLives = (int)e.NewValue; }
+            parent.game.difficultyLives = (int)sldLives.Value;
+
+        }
+
 
 
 

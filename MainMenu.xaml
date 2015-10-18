@@ -10,9 +10,12 @@
     d:DesignHeight="800">
     <Grid>
         <TextBlock x:Name="gameTitle" Height="150" Width="500" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Text="L O S T" FontFamily="Arial Bold" FontSize="100" FontWeight="ExtraBold" Margin="472,157,0,0"/>
-        <Button x:Name="cmdStart" Content="Start" HorizontalAlignment="Left" Height="77" Margin="328,416,0,0" VerticalAlignment="Top" Width="163" Click="StartGame"/>
-        <Button x:Name="cmdInstructions" Content="Instructions" HorizontalAlignment="Left" Height="77" Margin="562,416,0,0" VerticalAlignment="Top" Width="163" Click="LoadInstructions"/>
-        <Button x:Name="cmdDifficulty" Content="Difficulty" HorizontalAlignment="Left" Height="77" Margin="799,416,0,0" VerticalAlignment="Top" Width="163" Click="LoadDifficulty"/>
+        <Button x:Name="cmdStart" Content="Start" HorizontalAlignment="Left" Height="77" Margin="413,346,0,0" VerticalAlignment="Top" Width="163" Click="StartGame"/>
+        <Button x:Name="cmdInstructions" Content="Instructions" HorizontalAlignment="Left" Height="77" Margin="706,346,0,0" VerticalAlignment="Top" Width="163" Click="LoadInstructions"/>
+        <TextBlock x:Name="txtOptions" Height="150" Width="250" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Right"  TextWrapping="Wrap" Text="World Size&#xA;&#xA;Number of Ghosts&#xA;&#xA;Number of Lives" FontSize="24" Margin="342,479,0,0"/>
+        <Slider x:Name="sldSize" HorizontalAlignment="Left" Height="38" Margin="690,475,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultySize" Value="10" IsTabStop="False" Minimum="10" Maximum="30" LargeChange="2" SmallChange="1" StepFrequency="1"/>
+        <Slider x:Name="sldGhost" HorizontalAlignment="Left" Height="38" Margin="690,531,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultyGhost" Value="0" IsTabStop="False" Minimum="0" Maximum="10" LargeChange="2" SmallChange="1" StepFrequency="1"/>
+        <Slider x:Name="sldLives" HorizontalAlignment="Left" Height="38" Margin="690,590,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultyLives" Value="1" IsTabStop="False" Minimum="1" Maximum="5" LargeChange="2" SmallChange="1" StepFrequency="1"/>
 
     </Grid>
 </Page>
