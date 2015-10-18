@@ -60,8 +60,10 @@ namespace Project
 
         public void EndGame()
         {
-            this.Children.Add(mainMenu);
+            this.Children.Add(gameOver);
             game.started = false;
+            game.GraphicsDevice.Clear(Color.Black);
+            
         }
     }
 }
