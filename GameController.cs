@@ -113,6 +113,7 @@ namespace Project
 
             // Create game objects.
             player = new Player(this);
+            score = player.ghostEncounters;
             base.LoadContent();
         }
 
@@ -128,6 +129,7 @@ namespace Project
             keyboardState = keyboardManager.GetState();
             if (started)
             {
+                score = player.ghostEncounters;
                 if (player.HasWon())
                 {
                     mainPage.EndGame();
@@ -160,6 +162,8 @@ namespace Project
             {
                 // Clears the screen with the Color.CornflowerBlue
                 GraphicsDevice.Clear(Color.CornflowerBlue);
+                GraphicsDevice.SetBlendState(GraphicsDevice.BlendStates.AlphaBlend);
+
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].Draw(gameTime);
@@ -226,6 +230,7 @@ namespace Project
                 if (!player.invincible && player.IsEncountering(ghost))
                 {
                     player.ghostEncounters--;
+                    Remove(ghost);
                     if (player.ghostEncounters == 0)
                     {
                         mainPage.EndGame();
