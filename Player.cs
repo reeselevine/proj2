@@ -26,6 +26,10 @@ namespace Project
         private float collisionError;
         private float deltaError;
         public float prevY;
+        public int ghostEncounters;
+        public Boolean invincible;
+        private int invincibilityCounter;
+        private int invincibilityTimer;
 
         public Player(GameController game)
         {
@@ -33,11 +37,15 @@ namespace Project
             type = GameObjectType.Player;
             Yaw = 0;
             yTarget = 1;
-            yClamp = 10;
+            yClamp = 50;
             scaleDown = .001f;
             collisionError = .2f;
-            deltaError = .01f;
+            deltaError = .05f;
             prevY = 0f;
+            ghostEncounters = 3;
+            invincible = false;
+            invincibilityCounter = 0;
+            invincibilityTimer = 120;
             //camera controller
             pos = new Vector3(5, 1, 5);
             currentTarget = new Vector3(30, 1, 30);
@@ -47,8 +55,6 @@ namespace Project
             this.game = game;
         }
 
-       
-
         // Frame update.
         public override void Update(GameTime gameTime)
         {
@@ -56,9 +62,15 @@ namespace Project
             {
                 prevY = (float)game.accelerometerReading.AccelerationY;
             }
-            // TASK 1: Determine velocity based on accelerometer reading
-            //Tilt up and Down
-            //float deltaX = (float) game.accelerometerReading.AccelerationX - prevX;
+            if (invincible)
+            {
+                invincibilityCounter++;
+                if (invincibilityCounter % invincibilityTimer == 0)
+                {
+                    invincible = false;
+                    invincibilityCounter = 0;
+                }
+            }
             float deltaY = (float)game.accelerometerReading.AccelerationY - prevY;
             //Move Forward
             Vector3 temp;
@@ -80,7 +92,6 @@ namespace Project
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, 0, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
             currentTarget.Y = yTarget;
-            System.Diagnostics.Debug.WriteLine(Yaw);
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f);
             View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
@@ -122,6 +133,16 @@ namespace Project
             return false;
         }
 
+        public Boolean IsEncountering(Ghost ghost)
+        {
+            if (pos.X > ghost.pos.X && pos.X < ghost.pos.X + ghost.size &&
+                pos.Z > ghost.pos.Z && pos.Z < ghost.pos.Z + ghost.size)
+            {
+                return true;
+            }
+            return false;
+        }
+
         public override void OnManipulationUpdated(GestureRecognizer sender, ManipulationUpdatedEventArgs args)
         {
             float deltaX = -(float)args.Delta.Translation.X * scaleDown;
@@ -147,7 +168,14 @@ namespace Project
             int col = (int)Math.Floor(pos.Z / game.mazeController.cellsize);
             if (row == game.size - 1 && col == game.size - 1)
             {
-                return true;
+                float winBoundary = game.mazeController.cellsize / 4;
+                float x = pos.X % game.mazeController.cellsize;
+                float z = pos.Z % game.mazeController.cellsize;
+                if (x > winBoundary && x < winBoundary * 3 &&
+                    z > winBoundary && z < winBoundary * 3)
+                {
+                    return true;
+                }
             }
             return false;
         }

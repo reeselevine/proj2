@@ -37,6 +37,7 @@ namespace Project
     {
         private GraphicsDeviceManager graphicsDeviceManager;
         public List<GameObject> gameObjects;
+        public List<Ghost> ghosts;
         private Stack<GameObject> addedGameObjects;
         private Stack<GameObject> removedGameObjects;
         private KeyboardManager keyboardManager;
@@ -48,6 +49,8 @@ namespace Project
         public int score;
         public MainPage mainPage;
         public MazeController mazeController;
+        private double generateGhost;
+        public int maxGhosts;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
 
@@ -80,6 +83,8 @@ namespace Project
             random = new Random();
             input = new GameInput();
             size = 10;
+            maxGhosts = 10;
+            generateGhost = 0.99;
             // Set boundaries.
             boundaryNorth = 2.6f;
             boundaryEast = size * 10 - 2.6f;
@@ -104,6 +109,7 @@ namespace Project
             gameObjects = new List<GameObject>();
             addedGameObjects = new Stack<GameObject>();
             removedGameObjects = new Stack<GameObject>();
+            ghosts = new List<Ghost>();
 
             // Create game objects.
             player = new Player(this);
@@ -126,7 +132,9 @@ namespace Project
                 {
                     mainPage.EndGame();
                     PrepareForNewGame();
+                    return;
                 }
+                DoGhostStuff();
                 flushAddedAndRemovedGameObjects();
                 accelerometerReading = input.accelerometer.GetCurrentReading();
                 player.Update(gameTime);
@@ -199,13 +207,42 @@ namespace Project
         public void PrepareForNewGame()
         {
             gameObjects.Clear();
+            ghosts.Clear();
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
+            player.ghostEncounters = 3;
             mazeController = new MazeController(this, size);
             lightBeam = new LightBeam(this, mazeController.cellsize, 1000);
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
             gameObjects.Add(lightBeam);
+        }
+
+        private void DoGhostStuff()
+        {
+            // check to see if player is dead
+            foreach (Ghost ghost in ghosts)
+            {
+                if (!player.invincible && player.IsEncountering(ghost))
+                {
+                    player.ghostEncounters--;
+                    if (player.ghostEncounters == 0)
+                    {
+                        mainPage.EndGame();
+                        PrepareForNewGame();
+                        return;
+                    }
+                    player.invincible = true;
+                }
+            }
+            // add a ghost sometimes
+            double next = random.NextDouble();
+            if (ghosts.Count < maxGhosts && next > generateGhost)
+            {
+                Ghost ghost = new Ghost(this);
+                gameObjects.Add(ghost);
+                ghosts.Add(ghost);
+            }
         }
 
         public void OnManipulationStarted(GestureRecognizer sender, ManipulationStartedEventArgs args)

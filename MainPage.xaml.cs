@@ -31,19 +31,21 @@ namespace Project
     {
         public readonly GameController game;
         public MainMenu mainMenu;
+        public GameOver gameOver;
         public MainPage()
         {
             InitializeComponent();
             game = new GameController(this);
             game.Run(this);
             mainMenu = new MainMenu(this);
+            gameOver = new GameOver(this);
             this.Children.Add(mainMenu);
         }
 
         // TASK 1: Update the game's score
         public void UpdateScore(int score)
         {
-            txtScore.Text = "Score: " + score.ToString();
+            txtScore.Text = "Lives: " + score.ToString();
         }
 
         // TASK 2: Starts the game.  Not that it seems easier to simply move the game.Run(this) command to this function,
