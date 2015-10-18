@@ -202,7 +202,7 @@ namespace Project
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
             mazeController = new MazeController(this, size);
-            lightBeam = new LightBeam(this, 0.5f, 1000);
+            lightBeam = new LightBeam(this, mazeController.cellsize, 1000);
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
             gameObjects.Add(lightBeam);

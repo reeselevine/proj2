@@ -20,16 +20,16 @@ namespace Project
             float xPos = (game.size - 1) * game.mazeController.cellsize;
             float zPos = (game.size - 1) * game.mazeController.cellsize;
             float offset = width;
-
+            float adjust = game.mazeController.cellsize / 3;
             Color color = Color.LightYellow;
-            Vector3 frontBottomLeft = new Vector3(xPos - offset, -1.0f, zPos - offset);
-            Vector3 frontTopLeft = new Vector3(xPos - offset, height, zPos - offset);
-            Vector3 frontTopRight = new Vector3(xPos + offset, height, zPos - offset);
-            Vector3 frontBottomRight = new Vector3(xPos + offset, -1.0f, zPos - offset);
-            Vector3 backBottomLeft = new Vector3(xPos - offset, -1.0f, zPos + offset);
-            Vector3 backBottomRight = new Vector3(xPos + offset, -1.0f, zPos + offset);
-            Vector3 backTopLeft = new Vector3(xPos - offset, height, zPos + offset);
-            Vector3 backTopRight = new Vector3(xPos + offset, height, zPos + offset);
+            Vector3 frontBottomLeft = new Vector3(xPos + adjust, -1.0f, zPos + adjust);
+            Vector3 frontTopLeft = new Vector3(xPos + adjust, height, zPos + adjust);
+            Vector3 frontTopRight = new Vector3(xPos + offset - adjust, height, zPos + adjust);
+            Vector3 frontBottomRight = new Vector3(xPos + offset - adjust, -1.0f, zPos + adjust);
+            Vector3 backBottomLeft = new Vector3(xPos + adjust, -1.0f, zPos + offset - adjust);
+            Vector3 backBottomRight = new Vector3(xPos + offset - adjust, -1.0f, zPos + offset - adjust);
+            Vector3 backTopLeft = new Vector3(xPos + adjust, height, zPos + offset - adjust);
+            Vector3 backTopRight = new Vector3(xPos + offset - adjust, height, zPos + offset - adjust);
             
             vertices = Buffer.Vertex.New(game.GraphicsDevice, new[] 
             {
@@ -39,12 +39,12 @@ namespace Project
             new VertexPositionColor(frontBottomLeft, Color.Orange),
             new VertexPositionColor(frontTopRight, Color.Orange),
             new VertexPositionColor(frontBottomRight, Color.Orange),
-            new VertexPositionColor(backBottomLeft, Color.Orange), // BACK
-            new VertexPositionColor(backTopRight, Color.Orange),
-            new VertexPositionColor(backTopLeft, Color.Orange),
-            new VertexPositionColor(backBottomLeft, Color.Orange),
-            new VertexPositionColor(backBottomRight, Color.Orange),
-            new VertexPositionColor(backTopRight, Color.Orange),
+            new VertexPositionColor(backBottomLeft, Color.Blue), // BACK
+            new VertexPositionColor(backTopRight, Color.Blue),
+            new VertexPositionColor(backTopLeft, Color.Blue),
+            new VertexPositionColor(backBottomLeft, Color.Blue),
+            new VertexPositionColor(backBottomRight, Color.Blue),
+            new VertexPositionColor(backTopRight, Color.Blue),
             new VertexPositionColor(frontTopLeft, Color.OrangeRed), // Top
             new VertexPositionColor(backTopLeft, Color.OrangeRed),
             new VertexPositionColor(backTopRight, Color.OrangeRed),
@@ -57,18 +57,18 @@ namespace Project
             new VertexPositionColor(frontBottomLeft, Color.OrangeRed),
             new VertexPositionColor(frontBottomRight, Color.OrangeRed),
             new VertexPositionColor(backBottomRight, Color.OrangeRed),
-            new VertexPositionColor(frontBottomLeft, Color.DarkOrange), // Left
-            new VertexPositionColor(backBottomLeft, Color.DarkOrange),
-            new VertexPositionColor(backTopLeft, Color.DarkOrange),
-            new VertexPositionColor(frontBottomLeft, Color.DarkOrange),
-            new VertexPositionColor(backTopLeft, Color.DarkOrange),
-            new VertexPositionColor(frontTopLeft, Color.DarkOrange),
-            new VertexPositionColor(frontBottomRight, Color.DarkOrange), // Right
-            new VertexPositionColor(backTopRight, Color.DarkOrange),
-            new VertexPositionColor(backBottomRight, Color.DarkOrange),
-            new VertexPositionColor(frontBottomRight, Color.DarkOrange),
-            new VertexPositionColor(frontTopRight, Color.DarkOrange),
-            new VertexPositionColor(backTopRight, Color.DarkOrange),
+            new VertexPositionColor(frontBottomLeft, Color.Green), // Left
+            new VertexPositionColor(backBottomLeft, Color.Green),
+            new VertexPositionColor(backTopLeft, Color.Green),
+            new VertexPositionColor(frontBottomLeft, Color.Green),
+            new VertexPositionColor(backTopLeft, Color.Green),
+            new VertexPositionColor(frontTopLeft, Color.Green),
+            new VertexPositionColor(frontBottomRight, Color.Yellow), // Right
+            new VertexPositionColor(backTopRight, Color.Yellow),
+            new VertexPositionColor(backBottomRight, Color.Yellow),
+            new VertexPositionColor(frontBottomRight, Color.Yellow),
+            new VertexPositionColor(frontTopRight, Color.Yellow),
+            new VertexPositionColor(backTopRight, Color.Yellow),
                 });
 
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);

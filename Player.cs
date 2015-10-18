@@ -88,6 +88,7 @@ namespace Project
 
         private Boolean CollisionDetected()
         {
+            return false;
             if (pos.X <= game.boundaryNorth || pos.X >= game.boundarySouth ||
                 pos.Z <= game.boundaryWest || pos.Z >= game.boundaryEast)
             {
