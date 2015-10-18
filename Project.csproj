@@ -43,6 +43,7 @@
     <Compile Include="GameOver.xaml.cs">
       <DependentUpon>GameOver.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Ghost.cs" />
     <Compile Include="Ground.cs" />
     <Compile Include="LightBeam.cs" />
     <Compile Include="VertexPositionNormalColor.cs" />
