@@ -42,16 +42,16 @@ namespace Project
         // TASK 3: Function for setting difficulty
         private void changeDifficultySize(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultySize = (int)e.NewValue; }
+            if (parent.game != null) { parent.game.size = (int)e.NewValue; }
         }
         private void changeDifficultyGhost(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultyGhost = (int)e.NewValue; }
+            if (parent.game != null) { parent.game.maxGhosts = (int)e.NewValue; }
         }
 
         private void changeDifficultyLives(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultyLives = (int)e.NewValue; }
+            if (parent.game != null) { parent.game.playerLives = (int)e.NewValue; }
         }
 
     }

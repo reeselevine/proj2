@@ -46,23 +46,17 @@ namespace Project
         public LightBeam lightBeam;
         public AccelerometerReading accelerometerReading;
         public GameInput input;
-        public int score;
         public MainPage mainPage;
         public MazeController mazeController;
+        // Threshold value for random number generator when ghost is generated
         private double generateGhost;
+        // Values that can be changed from the main menu
+        public int size;
         public int maxGhosts;
-        // TASK 4: Use this to represent difficulty
-        public int difficultySize;
-        public int difficultyGhost;
-        public int difficultyLives;
-       public Winner winner;
-
-   
+        public int playerLives;
         // Random number generator
         public Random random;
-
-        // World boundaries that indicate where the edge of the screen is for the camera.
-        public int size;
+        // World boundaries that indicate where the edge of the maze is.
         public float boundaryNorth;
         public float boundaryEast;
         public float boundarySouth;
@@ -88,7 +82,6 @@ namespace Project
             random = new Random();
             input = new GameInput();
             size = 10;
-            maxGhosts = difficultyGhost;
             generateGhost = 0.99;
             // Set boundaries.
             boundaryNorth = 2.6f;
@@ -103,8 +96,6 @@ namespace Project
             input.gestureRecognizer.ManipulationCompleted += OnManipulationCompleted;
 
             this.mainPage = mainPage;
-
-            score = 3;
         }
 
         protected override void LoadContent()
@@ -116,8 +107,7 @@ namespace Project
             ghosts = new List<Ghost>();
 
             // Create game objects.
-            player = new Player(this);
-            score = player.ghostEncounters;
+            player = new Player(this, playerLives);
             base.LoadContent();
         }
 
@@ -133,11 +123,10 @@ namespace Project
             keyboardState = keyboardManager.GetState();
             if (started)
             {
-                score = player.ghostEncounters;
                 if (player.HasWon())
                 {
                     GraphicsDevice.Clear(Color.Black);
-                    mainPage.EndGame();
+                    mainPage.WinGame();
                     PrepareForNewGame();
                     return;
                 }
@@ -149,7 +138,7 @@ namespace Project
                 {
                     gameObjects[i].Update(gameTime);
                 }
-                mainPage.UpdateScore(score);
+                mainPage.UpdateLives(player.ghostEncounters);
             }
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
@@ -163,12 +152,10 @@ namespace Project
 
         protected override void Draw(GameTime gameTime)
         {
+            GraphicsDevice.Clear(Color.MidnightBlue);
             if (started)
             {
-                // Clears the screen with the Color.CornflowerBlue
-                GraphicsDevice.Clear(Color.MidnightBlue);
                 GraphicsDevice.SetBlendState(GraphicsDevice.BlendStates.AlphaBlend);
-
                 for (int i = 0; i < gameObjects.Count; i++)
                 {
                     gameObjects[i].Draw(gameTime);
@@ -220,12 +207,16 @@ namespace Project
             GraphicsDevice.Clear(Color.Black);
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
-            player.ghostEncounters = 3;
+            player.ghostEncounters = playerLives;
             mazeController = new MazeController(this, size);
             lightBeam = new LightBeam(this, mazeController.cellsize, 1000);
             gameObjects.Add(mazeController.ground);
             gameObjects.AddRange(mazeController.walls);
             gameObjects.Add(lightBeam);
+            boundaryNorth = 2.6f;
+            boundaryEast = size * 10 - 2.6f;
+            boundarySouth = size * 10 - 2.6f;
+            boundaryWest = 2.6f;
         }
 
         private void DoGhostStuff()

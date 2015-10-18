@@ -32,10 +32,7 @@ namespace Project
         public readonly GameController game;
         public MainMenu mainMenu;
         public GameOver gameOver;
-        public Winner winner;
-        public Difficulty difficultySize;
-        public Difficulty difficultyGhost;
-        public Difficulty difficultyLives;
+        public Winner gameWon;
         public MainPage()
         {
             InitializeComponent();
@@ -43,18 +40,15 @@ namespace Project
             game.Run(this);
             mainMenu = new MainMenu(this);
             gameOver = new GameOver(this);
-            winner = new Winner(this);
-            difficultySize = new Difficulty(this);
-            difficultyGhost = new Difficulty(this);
-            difficultyLives = new Difficulty(this);
+            gameWon = new Winner(this);
 
             this.Children.Add(mainMenu);
         }
 
         // TASK 1: Update the game's score
-        public void UpdateScore(int score)
+        public void UpdateLives(int lives)
         {
-            txtScore.Text = "Lives: " + score.ToString();
+            txtLives.Text = "Lives: " + lives.ToString();
         }
 
         // TASK 2: Starts the game.  Not that it seems easier to simply move the game.Run(this) command to this function,
@@ -71,8 +65,12 @@ namespace Project
         {
             this.Children.Add(gameOver);
             game.started = false;
-            game.GraphicsDevice.Clear(Color.Black);
-            
+        }
+
+        public void WinGame()
+        {
+            this.Children.Add(gameWon);
+            game.started = false;
         }
     }
 }

@@ -49,22 +49,19 @@ namespace Project
 
         private void changeDifficultySize(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultySize = (int)e.NewValue;
+            if (parent.game != null) { parent.game.size = (int)e.NewValue;
             }
-            parent.game.difficultySize = (int)sldSize.Value;
 
         }
         private void changeDifficultyGhost(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultyGhost = (int)e.NewValue; }
-            parent.game.difficultyGhost = (int)sldGhost.Value;
+            if (parent.game != null) { parent.game.maxGhosts = (int)e.NewValue; }
 
         }
 
         private void changeDifficultyLives(object sender, Windows.UI.Xaml.Controls.Primitives.RangeBaseValueChangedEventArgs e)
         {
-            if (parent.game != null) { parent.game.difficultyLives = (int)e.NewValue; }
-            parent.game.difficultyLives = (int)sldLives.Value;
+            if (parent.game != null) { parent.game.playerLives = (int)e.NewValue; }
 
         }
 
