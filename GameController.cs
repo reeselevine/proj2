@@ -53,6 +53,8 @@ namespace Project
         public int maxGhosts;
         // TASK 4: Use this to represent difficulty
         public float difficulty;
+        public Winner winner;
+        
 
    
         // Random number generator
@@ -99,7 +101,7 @@ namespace Project
 
             this.mainPage = mainPage;
 
-            score = 0;
+            score = 3;
             difficulty = 1;
         }
 

@@ -32,6 +32,10 @@ namespace Project
         public readonly GameController game;
         public MainMenu mainMenu;
         public GameOver gameOver;
+        public Winner winner;
+        public Difficulty difficultySize;
+        public Difficulty difficultyGhost;
+        public Difficulty difficultyLives;
         public MainPage()
         {
             InitializeComponent();
@@ -39,6 +43,11 @@ namespace Project
             game.Run(this);
             mainMenu = new MainMenu(this);
             gameOver = new GameOver(this);
+            winner = new Winner(this);
+            difficultySize = new Difficulty(this);
+            difficultyGhost = new Difficulty(this);
+            difficultyLives = new Difficulty(this);
+
             this.Children.Add(mainMenu);
         }
 

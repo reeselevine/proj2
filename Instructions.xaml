@@ -11,6 +11,6 @@
     <Grid>
         <Button x:Name="cmdBack" Content="Back" HorizontalAlignment="Left" Height="77" Margin="954,70,0,0" VerticalAlignment="Top" Width="163" Click="GoBack"/>
         <TextBlock x:Name="txtTitle" HorizontalAlignment="Center" Height="148" Margin="220,169,694,0" TextWrapping="Wrap" Text="INSTRUCTIONS" FontSize="50" FontStyle="Oblique" FontFamily="Arial Bold" VerticalAlignment="Top" Width="366"/>
-        <TextBlock x:Name="txtInstructions" HorizontalAlignment="Left" Height="148" Margin="308,317,0,0" TextWrapping="Wrap" FontSize="22" VerticalAlignment="Top" Width="442" Text="Make it to the center of the maze to survive!&#xA;Swipe to turn&#xA;Lean forward to accelerate forward&#xA;Or use the W key to move forward&#xA;Enjoy!"/>
+        <TextBlock x:Name="txtInstructions" HorizontalAlignment="Left" Height="300" Margin="308,317,0,0" TextWrapping="Wrap" FontSize="22" VerticalAlignment="Top" Width="442" Text="Make it to the center of the maze to survive!&#xA;&#xA;Swipe to turn arbitrarily&#xA;&#xA;Lean forward to accelerate forward&#xA;&#xA;Or use the W key to move forward&#xA;&#xA;Enjoy!"/>
     </Grid>
 </Page>

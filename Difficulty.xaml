@@ -1,0 +1,18 @@
+﻿<Page
+    x:Class="Project.Difficulty"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Project"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <TextBlock x:Name="txtDifficulty" HorizontalAlignment="Center" Height="148" Margin="220,169,694,0" TextWrapping="Wrap" Text="DIFFICULTY" FontSize="50" FontStyle="Oblique" FontFamily="Arial Bold" VerticalAlignment="Top" Width="366"/>
+        <TextBlock x:Name="txtOptions" Height="500" Width="250" VerticalAlignment="Top" HorizontalAlignment="Left" TextAlignment="Right"  TextWrapping="Wrap" Text="World Size&#xA;&#xA;Number of Ghosts&#xA;&#xA;Number of Lives" FontSize="24" Margin="341,278,0,-10"/>
+        <Slider x:Name="sldSize" HorizontalAlignment="Left" Height="38" Margin="689,274,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultySize" Value="1" IsTabStop="False" Minimum="1" Maximum="5" LargeChange="2" SmallChange="1" StepFrequency="1"/>
+        <Slider x:Name="sldGhosts" HorizontalAlignment="Left" Height="38" Margin="689,330,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultyGhost" Value="1" IsTabStop="False" Minimum="0" Maximum="10" LargeChange="2" SmallChange="1" StepFrequency="1"/>
+        <Slider x:Name="sldLives" HorizontalAlignment="Left" Height="38" Margin="689,389,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficultyLives" Value="1" IsTabStop="False" Minimum="1" Maximum="5" LargeChange="2" SmallChange="1" StepFrequency="1"/>
+        <Button x:Name="cmdBack" Content="Back" HorizontalAlignment="Left" Height="77" Margin="954,70,0,0" VerticalAlignment="Top" Width="163" Click="GoBack"/>
+    </Grid>
+</Page>

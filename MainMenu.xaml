@@ -9,13 +9,10 @@
     d:DesignWidth="1280"
     d:DesignHeight="800">
     <Grid>
-        <TextBlock x:Name="gameTitle" Height="150" Width="500" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Text="L O S T" FontFamily="Arial Bold" FontSize="100" FontWeight="ExtraBold" Margin="472,100,0,0"/>
-        <Button x:Name="cmdStart" Content="Start" HorizontalAlignment="Left" Height="77" Margin="444,359,0,0" VerticalAlignment="Top" Width="163" Click="StartGame"/>
-        <Slider x:Name="sldDifficulty" HorizontalAlignment="Left" Height="38" Margin="681,267,0,0" VerticalAlignment="Top" Width="159" ValueChanged="changeDifficulty" Value="1" IsTabStop="False" Minimum="0.5" Maximum="3" LargeChange="0.1" SmallChange="0.01" StepFrequency="0.01"/>
-        <TextBlock x:Name="txtTitle" HorizontalAlignment="Center" Height="30" Margin="447,274,653,0" VerticalAlignment="Top" Width="180" TextWrapping="Wrap" FontSize="20" FontStyle="Oblique" FontFamily="Arial Bold">
-        	<Run Text="DIFFICULTY LEVELS"/>
-        	<Run Text=":"/>
-        </TextBlock>
-        <Button x:Name="cmdInstructions" Content="Instructions" HorizontalAlignment="Left" Height="77" Margin="678,359,0,0" VerticalAlignment="Top" Width="163" Click="LoadInstructions"/>
+        <TextBlock x:Name="gameTitle" Height="150" Width="500" VerticalAlignment="Top" HorizontalAlignment="Left" TextWrapping="Wrap" Text="L O S T" FontFamily="Arial Bold" FontSize="100" FontWeight="ExtraBold" Margin="472,157,0,0"/>
+        <Button x:Name="cmdStart" Content="Start" HorizontalAlignment="Left" Height="77" Margin="328,416,0,0" VerticalAlignment="Top" Width="163" Click="StartGame"/>
+        <Button x:Name="cmdInstructions" Content="Instructions" HorizontalAlignment="Left" Height="77" Margin="562,416,0,0" VerticalAlignment="Top" Width="163" Click="LoadInstructions"/>
+        <Button x:Name="cmdDifficulty" Content="Difficulty" HorizontalAlignment="Left" Height="77" Margin="799,416,0,0" VerticalAlignment="Top" Width="163" Click="LoadDifficulty"/>
+
     </Grid>
 </Page>
