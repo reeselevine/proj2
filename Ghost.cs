@@ -23,6 +23,7 @@ namespace Project
         {
             this.game = game;
             color = new Color(new Vector3(124,0,0), 0.05f);
+
             size = 2;
             height = 0.5f;
             seek = 0;

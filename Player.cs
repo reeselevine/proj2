@@ -21,7 +21,6 @@ namespace Project
         public Vector3 oldPos, currentTarget;
         private float Yaw;
         private float yTarget;
-        private float yClamp;
         private float scaleDown;
         private float collisionError;
         private float deltaError;
@@ -36,7 +35,6 @@ namespace Project
             type = GameObjectType.Player;
             Yaw = 0;
             yTarget = 1;
-            yClamp = 50;
             scaleDown = .001f;
             collisionError = .2f;
             deltaError = .05f;
@@ -87,10 +85,23 @@ namespace Project
                     currentTarget -= change;
                 }
             }
-
+            if (game.keyboardState.IsKeyDown(Keys.S) || deltaY < -deltaError)
+            {
+                temp = (currentTarget - pos);
+                Vector3 change = new Vector3(temp.X, 0, temp.Z);
+                change.Normalize();
+                change /= 6;
+                pos -= change;
+                currentTarget -= change;
+                if (CollisionDetected())
+                {
+                    pos += change;
+                    currentTarget += change;
+                }
+            }
+            currentTarget.Y = yTarget;
             Matrix translation = Matrix.RotationYawPitchRoll(Yaw, 0, 0);
             currentTarget = Vector3.TransformCoordinate(currentTarget, translation);
-            currentTarget.Y = yTarget;
             //Camera update: Screen resize projection matrix changes
             Projection = Matrix.PerspectiveFovLH((float)Math.PI / 4.0f, (float)game.GraphicsDevice.BackBuffer.Width / game.GraphicsDevice.BackBuffer.Height, 0.1f, 1000.0f);
             View = Matrix.LookAtLH(pos, currentTarget, Vector3.UnitY);
@@ -147,7 +158,16 @@ namespace Project
             Yaw = (float)(Math.PI * 2 * deltaX);
             float deltaY = (float)args.Delta.Translation.Y / 6;
             yTarget +=  deltaY;
-            yTarget = (yTarget > yClamp) ? yClamp : ((yTarget < -yClamp) ? -yClamp : yTarget);
+            // Ugly, but makes sure that the player can always look up and down 45 degrees
+            float distance = (float)Math.Sqrt(Math.Pow(currentTarget.X, 2) + Math.Pow(currentTarget.Z, 2));
+            if (Math.Tan(Math.PI / 4) < (yTarget / distance))
+            {
+                yTarget = (float)(distance * Math.Tan(Math.PI / 4));
+            }
+            if (Math.Tan(-Math.PI / 4) > (yTarget / distance))
+            {
+                yTarget = (float)(distance * -Math.Tan(Math.PI / 4));
+            }
         }
 
         public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)
