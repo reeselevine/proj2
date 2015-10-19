@@ -113,7 +113,7 @@ namespace Project
 
         protected override void Initialize()
         {
-            Window.Title = "Our Game Sucks";
+            Window.Title = "Löst!";
 
             base.Initialize();
         }
