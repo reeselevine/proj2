@@ -68,6 +68,7 @@ namespace Project
 
         public override void Draw(GameTime gametime)
         {
+            game.GraphicsDevice.SetBlendState(game.GraphicsDevice.BlendStates.AlphaBlend);
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             basicEffect.CurrentTechnique.Passes[0].Apply();
