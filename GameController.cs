@@ -132,6 +132,7 @@ namespace Project
                 score = player.ghostEncounters;
                 if (player.HasWon())
                 {
+                    GraphicsDevice.Clear(Color.Black);
                     mainPage.EndGame();
                     PrepareForNewGame();
                     return;
@@ -161,7 +162,7 @@ namespace Project
             if (started)
             {
                 // Clears the screen with the Color.CornflowerBlue
-                GraphicsDevice.Clear(Color.CornflowerBlue);
+                GraphicsDevice.Clear(Color.MidnightBlue);
                 GraphicsDevice.SetBlendState(GraphicsDevice.BlendStates.AlphaBlend);
 
                 for (int i = 0; i < gameObjects.Count; i++)
@@ -212,6 +213,7 @@ namespace Project
         {
             gameObjects.Clear();
             ghosts.Clear();
+            GraphicsDevice.Clear(Color.Black);
             player.pos = new Vector3(5, 1, 5);
             player.prevY = 0;
             player.ghostEncounters = 3;

@@ -41,17 +41,9 @@ namespace Project
                 makeSouthWall();
             }
             effect = game.Content.Load<Effect>("Gouraud");
-            outlineShader = game.Content.Load<Effect>("Phong");
-
+           
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
-            basicEffect = new BasicEffect(game.GraphicsDevice)
-            {
-                View = game.player.View,
-                Projection = game.player.Projection,
-                World = game.player.World,
-                VertexColorEnabled = true,
-                LightingEnabled = false
-            };
+            
         }
 
         private void makeEastWall()
@@ -150,9 +142,7 @@ namespace Project
 
         public override void Update(GameTime gameTime)
         {
-            basicEffect.World = game.player.World;
-            basicEffect.View = game.player.View;
-            basicEffect.Projection = game.player.Projection;
+      
         }
 
         public override void Draw(GameTime gametime)
@@ -164,19 +154,10 @@ namespace Project
             effect.Parameters["cameraPos"].SetValue(game.player.pos);
             Matrix WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(game.player.World));
             effect.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
-            outlineShader.Parameters["World"].SetValue(game.player.World);//Erreur ici : NullReferenceException<br>outlineShader.Parameters["View"].SetValue(cam.view);
-            outlineShader.Parameters["Projection"].SetValue(game.player.Projection);
-            outlineShader.Parameters["View"].SetValue(game.player.View);
-            outlineShader.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
-            outlineShader.Parameters["cameraPos"].SetValue(game.player.pos);
-
-            /** effect holds the current shader effect for Walls,
-             * delete comments on basicEffect to deactivate shader */
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             effect.CurrentTechnique.Passes[0].Apply();
-            //basicEffect.CurrentTechnique.Passes[0].Apply();
-            //outlineShader.CurrentTechnique.Passes[0].Apply();
+            
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }

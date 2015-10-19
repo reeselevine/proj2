@@ -22,7 +22,7 @@ namespace Project
         public Ghost(GameController game)
         {
             this.game = game;
-            color = Color.White;
+            color = new Color(new Vector3(255,255,255), 0.25f);
             size = 2;
             height = 0.5f;
             seek = 0;
