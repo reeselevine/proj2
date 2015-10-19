@@ -7,7 +7,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+    <Grid Background = "Red">
         <Button x:Name="cmdMainMenu" Content="Main Menu" HorizontalAlignment="Left" Height="77" Margin="954,70,0,0" VerticalAlignment="Top" Width="163" Click="GoMainMenu"/>
         <TextBlock x:Name="txtGameOver" HorizontalAlignment="Center" Height="148" Margin="0,400,0,0" TextWrapping="Wrap" Text="GAME OVER" FontSize="100" FontWeight="ExtraBold" FontFamily="Arial Bold" VerticalAlignment="Top" Width="650"/>
     </Grid>

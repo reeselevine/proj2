@@ -22,7 +22,7 @@ namespace Project
         public Ghost(GameController game)
         {
             this.game = game;
-            color = new Color(new Vector3(255,255,255), 0.25f);
+            color = new Color(new Vector3(124,0,0), 0.05f);
             size = 2;
             height = 0.5f;
             seek = 0;
@@ -68,6 +68,7 @@ namespace Project
 
         public override void Draw(GameTime gametime)
         {
+            game.GraphicsDevice.SetBlendState(game.GraphicsDevice.BlendStates.AlphaBlend);
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             basicEffect.CurrentTechnique.Passes[0].Apply();
