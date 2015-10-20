@@ -20,6 +20,7 @@ namespace Project
         public Matrix World;
         public Vector3 oldPos, currentTarget;
         private float Yaw;
+        private float Pitch;
         private float yTarget;
         private float scaleDown;
         private float collisionError;
@@ -34,6 +35,7 @@ namespace Project
             this.game = game;
             type = GameObjectType.Player;
             Yaw = 0;
+            Pitch = 0;
             yTarget = 1;
             scaleDown = .001f;
             collisionError = .2f;
@@ -156,18 +158,11 @@ namespace Project
         {
             float deltaX = -(float)args.Delta.Translation.X * scaleDown;
             Yaw = (float)(Math.PI * 2 * deltaX);
-            float deltaY = (float)args.Delta.Translation.Y / 6;
-            yTarget +=  deltaY;
-            // Ugly, but makes sure that the player can always look up and down 45 degrees
+            Pitch += (float)args.Delta.Translation.Y / 500;
             float distance = (float)Math.Sqrt(Math.Pow(currentTarget.X, 2) + Math.Pow(currentTarget.Z, 2));
-            if (Math.Tan(Math.PI / 4) < (yTarget / distance))
-            {
-                yTarget = (float)(distance * Math.Tan(Math.PI / 4));
-            }
-            if (Math.Tan(-Math.PI / 4) > (yTarget / distance))
-            {
-                yTarget = (float)(distance * -Math.Tan(Math.PI / 4));
-            }
+            if (Pitch > Math.PI / 4) Pitch = (float)Math.PI / 4;
+            if (Pitch < -Math.PI / 4) Pitch = -(float)Math.PI / 4;
+            yTarget = (float)(distance * Math.Tan(Pitch));
         }
 
         public override void OnManipulationCompleted(GestureRecognizer sender, ManipulationCompletedEventArgs args)

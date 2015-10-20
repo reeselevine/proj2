@@ -144,22 +144,19 @@ namespace Project
 
         public override void Update(GameTime gameTime)
         {
-      
-        }
-
-        public override void Draw(GameTime gametime)
-        {
-            // Setup the effect parameters
             effect.Parameters["Projection"].SetValue(game.player.Projection);
             effect.Parameters["World"].SetValue(game.player.World);
             effect.Parameters["View"].SetValue(game.player.View);
             effect.Parameters["cameraPos"].SetValue(game.player.pos);
             Matrix WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(game.player.World));
             effect.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
+        }
+
+        public override void Draw(GameTime gametime)
+        {
             game.GraphicsDevice.SetVertexBuffer(vertices);
             game.GraphicsDevice.SetVertexInputLayout(inputLayout);
             effect.CurrentTechnique.Passes[0].Apply();
-            
             game.GraphicsDevice.Draw(PrimitiveType.TriangleList, vertices.ElementCount);
         }
     }
