@@ -13,6 +13,7 @@ namespace Project
     {
         private Buffer<VertexPositionNormalColor> vertices;
         private static float height = 5;
+        private int length;
         private float cellsize;
         //Vertex Normals for Walls
         Vector3 BOTTOM_NORTHWEST_NORMAL = new Vector3(-0.333f, -0.333f, -0.333f);
@@ -25,12 +26,13 @@ namespace Project
         Vector3 TOP_SOUTHEAST_NORMAL = new Vector3(0.333f, 0.333f, 0.333f);
 
         /** pos.y is actually the size of the cell!!! */
-        public Wall(GameController game, Vector3 pos, GameObjectType wallType)
+        public Wall(GameController game, Vector3 pos, GameObjectType wallType, int length)
         {
             this.game = game;
             this.pos = pos;
             cellsize = pos.Y;
             type = wallType;
+            this.length = length;
 
             if (type == GameObjectType.EastWall)
             {
@@ -50,7 +52,7 @@ namespace Project
         {
             Color color = Color.Plum;
             float northSide = pos.X;
-            float southSide = pos.X + cellsize;
+            float southSide = pos.X + (cellsize * length);
             float westSide = pos.Z - cellsize / 4;
             float eastSide = pos.Z + cellsize / 4;
             vertices = Buffer.Vertex.New(game.GraphicsDevice,
@@ -99,7 +101,7 @@ namespace Project
             float northSide = pos.X - cellsize / 4;
             float southSide = pos.X + cellsize / 4;
             float westSide = pos.Z;
-            float eastSide = pos.Z + cellsize;
+            float eastSide = pos.Z + (cellsize * length);
             vertices = Buffer.Vertex.New(game.GraphicsDevice,
                 new[] {
                     // north side

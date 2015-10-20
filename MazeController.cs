@@ -32,23 +32,45 @@ namespace Project
 
        public void Generate(int width, int height) {
            maze = new Maze(width, height);
-           for (int i = 0; i < width; i++)
-            {
-                walls.Add(new Wall(game, new Vector3(0, cellsize, i * cellsize), GameObjectType.SouthWall));
-            }
+          
+           walls.Add(new Wall(game, new Vector3(0, cellsize, 0), GameObjectType.SouthWall, width));
+           walls.Add(new Wall(game, new Vector3(0, cellsize, 0),GameObjectType.EastWall, height));
+           //SouthWalls
            for (int row = 0; row < height; row++)
            {
-               walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, 0),GameObjectType.EastWall));
                for (int col = 0; col < width; col++)
                {
-                    if ((maze.grid[row, col] & Maze.S) == 0)
+                   if ((maze.grid[row, col] & Maze.S) == 0)
                     {
-                        walls.Add(new Wall(game, new Vector3((row + 1) * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall));
+                       int nextCol = col + 1;
+                       int length = 1;
+                       while (nextCol < width && (maze.grid[row, nextCol] & Maze.S) == 0)
+	                   {
+	                       nextCol++;
+                           length++;
+	                   }
+                        walls.Add(new Wall(game, new Vector3((row + 1) * cellsize, cellsize, col * cellsize), GameObjectType.SouthWall, length));
+                        col = nextCol;
                     }
+               }
+           }
+           //EastWalls
+           for (int col = 0; col < width; col++)
+           {
+               for (int row = 0; row < height; row++)
+               {
                    if ((maze.grid[row, col] & Maze.E) == 0)
-                    {
-                        walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, (col + 1) * cellsize), GameObjectType.EastWall));
-                    }
+                   {
+                       int nextRow = row + 1;
+                       int length = 1;
+                       while (nextRow < height && (maze.grid[nextRow, col] & Maze.E) == 0)
+                       {
+                           nextRow++;
+                           length++;
+                       }
+                       walls.Add(new Wall(game, new Vector3(row * cellsize, cellsize, (col + 1) * cellsize), GameObjectType.EastWall, length));
+                       row = nextRow;
+                   }
                }
            }
        }
