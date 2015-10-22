@@ -72,5 +72,11 @@ namespace Project
             this.Children.Add(gameWon);
             game.started = false;
         }
+
+        public void QuitGame()
+        {
+            this.Children.Add(mainMenu);
+            game.started = false;
+        }
     }
 }

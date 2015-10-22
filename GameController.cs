@@ -127,8 +127,11 @@ namespace Project
                 {
                     GraphicsDevice.Clear(Color.Black);
                     mainPage.WinGame();
-                    PrepareForNewGame();
                     return;
+                }
+                if (keyboardState.IsKeyDown(Keys.Q))
+                {
+                    mainPage.QuitGame();
                 }
                 DoGhostStuff();
                 flushAddedAndRemovedGameObjects();
