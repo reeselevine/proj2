@@ -20,8 +20,9 @@ namespace Project
             float xPos = (game.size - 1) * game.mazeController.cellsize;
             float zPos = (game.size - 1) * game.mazeController.cellsize;
             float offset = width;
+            
             float adjust = game.mazeController.cellsize / 3;
-            Color color = new Color(new Vector3(124, 124, 0), 0.1f);
+            Color color = new Color(new Vector3(124, 124, 0), 0.01f);
             Vector3 frontBottomLeft = new Vector3(xPos + adjust, -1.0f, zPos + adjust);
             Vector3 frontTopLeft = new Vector3(xPos + adjust, height, zPos + adjust);
             Vector3 frontTopRight = new Vector3(xPos + offset - adjust, height, zPos + adjust);

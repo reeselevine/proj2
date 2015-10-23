@@ -27,7 +27,7 @@ namespace Project
                 new VertexPositionNormalColor(new Vector3(width, 0, height), normal, color),
                 new VertexPositionNormalColor(new Vector3(width, 0, 0), normal, color)
             });
-            effect = game.Content.Load<Effect>("Gouraud");
+            effect = game.Content.Load<Effect>("Phong");
             inputLayout = VertexInputLayout.FromBuffer(0, vertices);
         }
 

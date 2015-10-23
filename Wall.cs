@@ -50,7 +50,7 @@ namespace Project
 
         private void makeEastWall()
         {
-            Color color = Color.Plum;
+            Color color = Color.DeepSkyBlue;
             float northSide = pos.X;
             float southSide = pos.X + (cellsize * length);
             float westSide = pos.Z - cellsize / 4;
@@ -97,7 +97,8 @@ namespace Project
 
         private void makeSouthWall()
         {
-            Color color = Color.Aqua;
+            Color color = Color.LightSkyBlue;
+;
             float northSide = pos.X - cellsize / 4;
             float southSide = pos.X + cellsize / 4;
             float westSide = pos.Z;
@@ -150,6 +151,7 @@ namespace Project
             effect.Parameters["cameraPos"].SetValue(game.player.pos);
             Matrix WorldInverseTranspose = Matrix.Transpose(Matrix.Invert(game.player.World));
             effect.Parameters["worldInvTrp"].SetValue(WorldInverseTranspose);
+            //effect.Parameters["lightPntPos"].SetValue(10f);
         }
 
         public override void Draw(GameTime gametime)
